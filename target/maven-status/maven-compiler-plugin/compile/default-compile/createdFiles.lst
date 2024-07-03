@@ -1,0 +1,7 @@
+com\xxn\crawler\controller\CrawlerController.class
+com\xxn\crawler\CrawlerApplication.class
+com\xxn\crawler\utiles\CrawlerUtils.class
+com\xxn\crawler\result\Result.class
+com\xxn\crawler\controller\MyProcessor.class
+com\xxn\crawler\pojo\user.class
+com\xxn\crawler\utiles\PDFUtils.class

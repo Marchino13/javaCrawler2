@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>爬虫网页</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        .container {
+            max-width: 600px;
+            margin: 100px auto;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .input-group {
+            margin: 10px 0;
+            text-align: center;
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: 70%;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1 style="margin-bottom: 20px;">王子请爪巴</h1>
+    <div class="input-group">
+        <input type="text" id="url" placeholder="请输入URL">
+    </div>
+    <div class="input-group">
+        <button onclick="getUrl()">确认</button>
+    </div>
+</div>
+
+<script>
+    function getUrl() {
+        var url = document.getElementById("url").value.trim();  // 获取输入框中的值 并去除首尾空格
+
+        if (!url) {
+            alert("请输入URL");
+            return;
+        }
+
+        fetch("/crawler/url", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            // body: JSON.stringify({url: url})
+            body: url            // url为字符串形式
+        })
+            // .then(response => {
+            //     if (!response.ok) {
+            //         throw new Error('网络错误或服务器错误');
+            //     }
+            //     return response.json();
+            // })
+            .then(res => {
+                console.log(res)
+                return res.text() // 获取后台返回的数据
+            })    //对res进行处理
+            .then(res => { // res就是后台返回的结果
+                console.log(res)
+                if(res === "Success"){ // 判断请求是否成功
+                    location.href = '/showInfo.html'
+                }else{
+                    alert("抓取失败 是什么原因呢~")
+                }
+            })
+    }
+</script>
+</body>
+</html>
