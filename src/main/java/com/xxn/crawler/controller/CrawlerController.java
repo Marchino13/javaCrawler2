@@ -4,9 +4,7 @@ import com.xxn.crawler.crawlerUtiles.MyTask;
 import com.xxn.crawler.result.Result;
 import com.xxn.crawler.crawlerUtiles.GetAllByUrl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  *
@@ -22,19 +20,22 @@ public class CrawlerController {
     @Autowired
     private GetAllByUrl spider;
 
-   /***
-    * @description
-    * @param: url 要爬取的网站url
-    * @param: path 保存路径
-    * @return com.xxn.crawler.result.Result<java.lang.String>
-    * @author Marchino
-    * @date 21:56 2024/7/3
-    */
-   @GetMapping("/getAllByUrl")
-   public Result<String> getByUrl(String url, String path) {
-        spider = new GetAllByUrl(url, path);
+    /***
+     * @description
+     * @param: url 要爬取的网站url
+     * @param: path 保存路径
+     * @return com.xxn.crawler.result.Result<java.lang.String>
+     * @author Marchino
+     * @date 21:56 2024/7/3
+     */
+    @PostMapping("/getAllByUrl")
+    public String getByUrl(@RequestBody String url) {
+        spider = new GetAllByUrl(url, "D:\\test");
+
         String stringJson = spider.start();
-        return Result.success("爬取成功");
+
+        System.out.println(url);
+        return "Success";
     }
 
     /***
