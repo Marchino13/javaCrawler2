@@ -1,5 +1,6 @@
 package com.xxn.crawler;
 
+import com.xxn.crawler.crawlerUtiles.GetImage;
 import com.xxn.crawler.crawlerUtiles.GetNews;
 import com.xxn.crawler.pojo.News;
 

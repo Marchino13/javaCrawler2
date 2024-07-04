@@ -38,9 +38,8 @@ public class TaskGetNews {
 
     private void process() {
         System.out.println("基于接口定时任务");
-        News start = spider.start();
-
-        //TODO 下载
+        News news = spider.start();
+        PdfUtil.newsTopdf(news.getTitle(), news.getTime(), news.getContent(), savePath);
 
     }
 }
