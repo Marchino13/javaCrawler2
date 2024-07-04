@@ -143,78 +143,26 @@
 </div>
 
 <script>
-    function displayImages(images) {
-        const imageContainer = document.getElementById('imageContainer');
-
-        if (Array.isArray(images) && images.length > 0) {
-            let html = '';
-            images.forEach((item, index) => {
-                html += `
-                    <div class="image-item">
-                        <div class="source-tag">来源 ${index + 1}</div>
-                        <img src="${item.url}" alt="${item.title || '图片'}" class="image">
-                        <h2 class="image-title">${item.title || '无标题'}</h2>
-                        <p class="image-content">${item.description || '无描述'}</p>
-                        <div class="image-time">${item.time || '未知时间'}</div>
-                    </div>
-                `;
-            });
-            imageContainer.innerHTML = html;
-        } else {
-            imageContainer.innerHTML = '<p class="error">无有效数据</p>';
-        }
-    }
-
-    function checkTaskStatus() {
-        fetch("/crawler/previewImages")
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('网络响应不正常');
-                }
-                return response.json();
-            })
-            .then(images => {
-                console.log(images);
-                displayImages(images);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                document.getElementById('imageContainer').innerHTML = `<p class="error">获取数据时出错: ${error.message}</p>`;
-            });
+    function displayImages() {
+        alert("开发中...")
     }
 
     function returnToUrl() {
         window.location.href = 'Image_url.html';
     }
-
     function downloadImages() {
         fetch("/crawler/downloadImages", {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: ""
-        }).then(response => {
-            if (response.ok) {
-                return response.blob();
-            } else {
-                throw new Error('下载失败');
-            }
-        }).then(blob => {
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            // a.download = 'images.pdf';
-            a.click();
-        }).catch(error => {
-            console.error('Error:', error);
-            alert('下载出错，请稍后再试');
-        });
+        })
     }
-
     // 初始调用
-    checkTaskStatus();
+    displayImages();
 
     // 如果需要定期刷新，可以取消下面的注释
     // setInterval(checkTaskStatus, 5000);
+
 </script>
 </body>
 </html>
