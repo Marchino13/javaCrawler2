@@ -154,7 +154,7 @@
         } else if (news && typeof news === 'object') {
             newsContainer.innerHTML = `
                 <div class="news-item">
-                    <div class="source-tag">单一来源</div>
+                    <div class="source-tag">${news.source || '单一来源'}</div>
                     <h2 class="news-title">${news.title || '无标题'}</h2>
                     <p class="news-content">${news.content || '无内容'}</p>
                     <div class="news-time">${news.time || '未知时间'}</div>

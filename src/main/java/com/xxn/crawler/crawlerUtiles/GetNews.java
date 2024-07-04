@@ -71,7 +71,6 @@ public class GetNews implements PageProcessor{
         news.setTime(publishTime);
         news.setSource(source);
 
-
     }
 
     @Override
