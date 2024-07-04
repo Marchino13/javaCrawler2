@@ -5,6 +5,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.stereotype.Component;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.Spider;
@@ -18,6 +19,7 @@ import us.codecraft.webmagic.selector.Selectable;
 
 import java.util.List;
 
+@Component
 public class GetNews implements PageProcessor{
 
     private String url;
@@ -51,8 +53,14 @@ public class GetNews implements PageProcessor{
 
         List<String> text1 = html.css("#d-container > div > div.infobox > div > div > div > div > p > span","text").all();
         List<String> text2 = html.css("#d-container > div > div.infobox > div > div > div > div > p","text").all();
-        String articleText = text1.toString() + text2.toString();
-
+//        String articleText = text1.toString() + text2.toString();
+        String articleText = "";
+        for (String s : text1) {
+            articleText +=s;
+        }
+        for (String s : text2) {
+            articleText +=s;
+        }
         // 创建一个新的 News 对象，并设置数据
         news = new News();
         news.setTitle(title);
@@ -71,8 +79,6 @@ public class GetNews implements PageProcessor{
         spider = Spider.create(this)
                 //设置url
                 .addUrl(url)
-                //设置持久层
-                .addPipeline(new FilePipeline(path))
                 //设置布隆过滤器
                 .thread(1);
 
@@ -91,4 +97,6 @@ public class GetNews implements PageProcessor{
         }
         return news;
     }
+
+
 }

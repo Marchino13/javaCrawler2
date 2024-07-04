@@ -1,6 +1,130 @@
-<html>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>欢迎来到爪巴 🐾</title>
+    <style>
+        /* 基本页面样式 */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; /* 内容从顶部开始排列 */
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); /* 渐变背景 */
+        }
+
+        /* 标题样式 */
+        .title {
+            font-size: 48px;
+            color: #2c3e50;
+            margin-top: 10vh; /* 顶部留白 */
+            margin-bottom: 40px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 1s ease-out; /* 淡入动画 */
+        }
+
+        /* 选项容器样式 */
+        .container {
+            display: flex;
+            justify-content: space-around;
+            width: 90%;
+            max-width: 1000px;
+            margin-bottom: 5vh; /* 底部留白 */
+        }
+
+        /* 单个选项卡样式 */
+        .option {
+            background-color: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            width: 40%;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            animation: slideUp 0.5s ease-out; /* 向上滑入动画 */
+        }
+
+        /* 选项卡悬停效果 */
+        .option:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        /* 选项卡标题样式 */
+        h2 {
+            color: #34495e;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+
+        /* 按钮样式 */
+        .btn {
+            display: inline-block;
+            padding: 15px 40px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        /* 按钮悬停效果 */
+        .btn:hover {
+            background-color: #2980b9;
+            transform: scale(1.05);
+        }
+
+        /* 图标样式 */
+        .icon {
+            font-size: 70px;
+            margin-bottom: 20px;
+            color: #3498db;
+            transition: all 0.3s ease;
+        }
+
+        /* 图标悬停效果 */
+        .option:hover .icon {
+            transform: scale(1.1);
+        }
+
+        /* 淡入动画关键帧 */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* 向上滑入动画关键帧 */
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+</head>
 <body>
-<h1>hello word!!!222</h1>
-<p>this is a html page</p>
+<!-- 页面标题 -->
+<h1 class="title">欢迎来到爪巴 🐾</h1>
+
+<!-- 选项容器 -->
+<div class="container">
+    <!-- 定时抓取选项 -->
+    <div class="option">
+        <div class="icon">⏰</div>
+        <h2>定时抓取</h2>
+        <a href="time_url.html" class="btn">进入</a>
+    </div>
+    <!-- 立即抓取选项 -->
+    <div class="option">
+        <div class="icon">🚀</div>
+        <h2>立即抓取</h2>
+        <a href="url.html" class="btn">进入</a>
+    </div>
+</div>
 </body>
 </html>

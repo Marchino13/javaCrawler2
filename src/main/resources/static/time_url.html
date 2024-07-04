@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>定时抓取 🕒</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+
+        .container {
+            background-color: #ffffff;
+            border-radius: 15px;
+            padding: 40px;
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            margin-top: 5vh;
+        }
+
+        .icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+            color: #4CAF50;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 36px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-group {
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        input[type="text"], input[type="number"], select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #4CAF50;
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        input[type="text"]:focus, input[type="number"]:focus, select:focus {
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.4);
+        }
+
+        .radio-group {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        .radio-group label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .radio-group input[type="radio"] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #4CAF50;
+            border-radius: 50%;
+            margin-right: 10px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .radio-group input[type="radio"]:checked {
+            background-color: #4CAF50;
+            box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+        }
+
+        .radio-group input[type="radio"]:checked::before {
+            content: '';
+            display: block;
+            width: 10px;
+            height: 10px;
+            margin: 3px;
+            background-color: white;
+            border-radius: 50%;
+        }
+
+        .time-inputs {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .time-inputs input, .time-inputs select {
+            width: 48%;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 80px;
+            margin-top: 30px;
+        }
+
+        .path-input {
+            display: flex;
+            gap: 10px;
+        }
+
+        .path-input input {
+            flex-grow: 1;
+        }
+
+        .path-input .btn {
+            flex-shrink: 0;
+            padding: 12px 15px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="icon">🕒</div>
+    <h1>定时抓取设置</h1>
+    <div class="input-group">
+        <label for="url">URL地址：</label>
+        <input type="text" id="url" placeholder="请输入URL">
+    </div>
+    <div class="radio-group">
+        <label>
+            <input type="radio" name="crawlType" value="true" checked>
+            <span>抓取新闻</span>
+        </label>
+        <label>
+            <input type="radio" name="crawlType" value="false">
+            <span>抓取图片</span>
+        </label>
+    </div>
+    <div class="input-group">
+        <label>抓取间隔：</label>
+        <div class="time-inputs">
+            <input type="number" id="minutes" min="0" placeholder="分钟">
+            <select id="seconds">
+                <option value="">秒数</option>
+                <option value="0">0</option>
+                <option value="15">15</option>
+                <option value="30">30</option>
+                <option value="45">45</option>
+            </select>
+        </div>
+    </div>
+    <div class="input-group">
+        <label for="savePath">保存路径：</label>
+        <div class="path-input">
+            <input type="text" id="savePath" placeholder="请输入保存路径">
+            <button class="btn" onclick="choosePath()">选择</button>
+        </div>
+    </div>
+    <div class="btn-group">
+        <button class="btn" onclick="returnToIndex()">返回首页</button>
+        <button class="btn" onclick="startTimedCrawl()">开始抓取</button>
+    </div>
+</div>
+<script>
+    function startTimedCrawl() {
+        var url = document.getElementById("url").value.trim();
+        var minutes = document.getElementById("minutes").value;
+        var seconds = document.getElementById("seconds").value;
+        var savePath = document.getElementById("savePath").value.trim();
+        var flag = document.querySelector('input[name="crawlType"]:checked').value === "true"; // 匹配指定 CSS 选择器的第一个元素。
+
+        if (!url || !minutes || !seconds || !savePath) {
+            alert("请填写所有字段");
+            return;
+        }
+
+        var interval = (parseInt(minutes) * 60 + parseInt(seconds)) * 1000;
+
+        // 这里应该发送请求到后端开始定时抓取
+        fetch("/crawler/startTimedCrawl", {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                url: url,
+                interval: interval,
+                savePath: savePath,
+                flag: flag
+            })
+        }).then(response => {
+            if (!response.ok) {
+                throw new Error('网络错误或服务器错误');
+            }
+            return response.text();
+        }).then(result => {
+            alert("定时抓取任务已开始");
+        }).catch(error => {
+            console.error('Error:', error);
+            alert("发生错误，请稍后再试");
+        });
+    }
+
+    function returnToIndex() {
+        window.location.href = 'index.html';
+    }
+
+    function choosePath() {
+        alert("后端开发中");
+    }
+</script>
+</body>
+</html>
