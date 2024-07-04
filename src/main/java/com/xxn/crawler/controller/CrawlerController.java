@@ -1,5 +1,6 @@
 package com.xxn.crawler.controller;
 
+import com.xxn.crawler.crawlerUtiles.GetNews;
 import com.xxn.crawler.crawlerUtiles.MyTask;
 import com.xxn.crawler.pojo.News;
 import com.xxn.crawler.result.Result;
@@ -33,14 +34,12 @@ public class CrawlerController {
      */
     @PostMapping("/getAllByUrl")
     public String getByUrl(HttpSession session, @RequestBody String url) {
-//        spider = new GetAllByUrl(url, "D:\\test");
+        spider = new GetAllByUrl(url, "D:\\test");
+        GetNews getNews = new GetNews(url, "D:\\test");
+        News news = getNews.start();
 
-//        News news = new News();
-//        String stringJson = spider.start();
-
-//        session.setAttribute("news", news);
-        session.setAttribute("test", "test");
-                System.out.println(url);
+        session.setAttribute("news", news);
+        System.out.println(url);
         return "Success";
     }
 
@@ -57,6 +56,22 @@ public class CrawlerController {
     public void download() {
         spider = new GetAllByUrl("https://www.baidu.com/", "D:\\test");
         spider.start();
+    }
+
+    /***
+     * @description 预览
+     * @param: session
+     * @return com.xxn.crawler.pojo.News
+     * @author Marchino
+     * @date 10:13 2024/7/4
+     */
+
+    @GetMapping("/preview")
+    public News getSessionNews(HttpSession session) {
+        Object attribute = session.getAttribute("test");
+        News news = (News) attribute;
+        System.out.println(news.getTitle());
+        return (News) session.getAttribute("test");
     }
 
 }

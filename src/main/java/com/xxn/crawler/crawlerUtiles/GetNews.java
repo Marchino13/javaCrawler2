@@ -23,11 +23,7 @@ public class GetNews implements PageProcessor{
     private String url;
     private String path;
     private Spider spider;
-
-    public String title;
-    public String source;
-    public String publishTime;
-    public String articleText;
+    private News news;
 
     public GetNews(String url, String path) {
         this.url = url;
@@ -41,19 +37,27 @@ public class GetNews implements PageProcessor{
     public void process(Page page) {
         Html html = page.getHtml();
         //获取新闻页面的title；
-        title = html.css("#d-container > div > div.infobox > div > h1", "text").get();
-        title = title + "</br>";
+        String title = html.css("#d-container > div > div.infobox > div > h1", "text").get();
+//        title = title + "</br>";
         page.putField("标题", title);
-        source = html.css("#d-container > div > div.infobox > div > p > span:nth-child(1)", "text").get();
-        source = source + "</br>";
+        String source = html.css("#d-container > div > div.infobox > div > p > span:nth-child(1)", "text").get();
+//        source = source + "</br>";
         page.putField("来源", source);
-        publishTime = html.css("#d-container > div > div.infobox > div > p > span:nth-child(2)", "text").get();
-        publishTime = publishTime + "</br>";
+        String publishTime = html.css("#d-container > div > div.infobox > div > p > span:nth-child(2)", "text").get();
+//        publishTime = publishTime + "</br>";
         page.putField("发布时间", publishTime);
+        List<String> text = html.xpath("//div[@class='wp_articlecontent']").all();
+        page.putField("文章内容",text);
+
         List<String> text1 = html.css("#d-container > div > div.infobox > div > div > div > div > p > span","text").all();
         List<String> text2 = html.css("#d-container > div > div.infobox > div > div > div > div > p","text").all();
-        articleText = text1.toString() + text2.toString();
-        page.putField("文章内容",articleText);
+        String articleText = text1.toString() + text2.toString();
+
+        // 创建一个新的 News 对象，并设置数据
+        news = new News();
+        news.setTitle(title);
+        news.setContent(articleText);
+        news.setTime(publishTime);
 
 
     }
@@ -64,18 +68,27 @@ public class GetNews implements PageProcessor{
     }
 
     public News start() {
-        spider = Spider.create(new GetNews())
+        spider = Spider.create(this)
                 //设置url
                 .addUrl(url)
+                //设置持久层
                 .addPipeline(new FilePipeline(path))
                 //设置布隆过滤器
-                .thread(5);
-        spider.start();
+                .thread(1);
 
-        News news = new News();
-        news.setTitle(title);
-        news.setTime(source + publishTime);
-        news.setContent(articleText);
+        // 创建一个线程来运行spider
+        Thread spiderThread = new Thread(spider);
+
+        // 启动spider线程
+        spiderThread.start();
+
+        // 等待spider线程执行完毕
+        try {
+            spiderThread.join();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt(); // 重新设置中断状态
+            e.printStackTrace();
+        }
         return news;
     }
 }

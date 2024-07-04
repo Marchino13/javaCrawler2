@@ -1,53 +1,137 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>Session Example</title>
+    <title>新闻预览</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f2f5;
+            color: #333;
+        }
+        .header {
+            text-align: center;
+            padding: 20px 0;
+            background-color: #1a73e8;
+            color: white;
+            margin-bottom: 30px;
+        }
+        .news-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .news-item {
+            background-color: #fff;
+            margin-bottom: 30px;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        .news-item:hover {
+            transform: translateY(-5px);
+        }
+        .news-title {
+            font-size: 22px;
+            color: #1a73e8;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
+        }
+        .news-content {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 15px;
+            line-height: 1.8;
+        }
+        .news-time {
+            font-size: 14px;
+            color: #888;
+            text-align: right;
+            font-style: italic;
+        }
+        .error {
+            color: #d32f2f;
+            font-weight: bold;
+            text-align: center;
+            padding: 20px;
+            background-color: #ffcdd2;
+            border-radius: 8px;
+        }
+        .source-tag {
+            display: inline-block;
+            padding: 3px 8px;
+            background-color: #e8f0fe;
+            color: #1a73e8;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 <body>
-<h1>这是预览页面</h1>
-<div id="sessionData"></div>
+<div class="header">
+    <h1>新闻预览页面</h1>
+</div>
+<div id="newsContainer" class="news-container"></div>
 
 <script>
-    //轮训函数
+    function displayNews(news) {
+        const newsContainer = document.getElementById('newsContainer');
+
+        if (Array.isArray(news) && news.length > 0) {
+            let html = '';
+            news.forEach((item, index) => {
+                html += `
+                    <div class="news-item">
+                        <div class="source-tag">来源 ${index + 1}</div>
+                        <h2 class="news-title">${item.title || '无标题'}</h2>
+                        <p class="news-content">${item.content || '无内容'}</p>
+                        <div class="news-time">${item.time || '未知时间'}</div>
+                    </div>
+                `;
+            });
+            newsContainer.innerHTML = html;
+        } else if (news && typeof news === 'object') {
+            newsContainer.innerHTML = `
+                <div class="news-item">
+                    <div class="source-tag">单一来源</div>
+                    <h2 class="news-title">${news.title || '无标题'}</h2>
+                    <p class="news-content">${news.content || '无内容'}</p>
+                    <div class="news-time">${news.time || '未知时间'}</div>
+                </div>
+            `;
+        } else {
+            newsContainer.innerHTML = '<p class="error">无有效数据</p>';
+        }
+    }
+
     function checkTaskStatus() {
-        fetch("/crawler/checkStatus", {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-            .then(response => response.json())
-            .then(status => {
-                if (status === "Success") {
-                    window.location.href = '/getInfo.html';
-                } else if (status === "Failed") {
-                    alert("抓取失败 是什么原因呢~");
-                } else {
-                    setTimeout(checkTaskStatus, 500); // 继续轮询
+        fetch("/crawler/preview")
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('网络响应不正常');
                 }
+                return response.json();
+            })
+            .then(news => {
+                console.log(news);
+                displayNews(news);
             })
             .catch(error => {
-                console.error("请求出错:", error);
+                console.error('Error:', error);
+                document.getElementById('newsContainer').innerHTML = `<p class="error">获取数据时出错: ${error.message}</p>`;
             });
     }
+
     // 初始调用
     checkTaskStatus();
 
-    function fetchSessionData(attribute) {
-        fetch(`/crawler/get?attribute=${attribute}`)
-            .then(response => response.text())
-            .then(data => {
-                const sessionDataDiv = document.getElementById('sessionData');
-                sessionDataDiv.innerHTML = `<p>${attribute}: ${data}</p>`;
-            })
-            .catch(error => {
-                console.error('Error fetching session data:', error);
-            });
-    }
-
-    // 例如，获取名为 'username' 的会话属性
-    // fetchSessionData('test');
+    // 如果需要定期刷新，可以取消下面的注释
+    // setInterval(checkTaskStatus, 5000);
 </script>
 </body>
 </html>
