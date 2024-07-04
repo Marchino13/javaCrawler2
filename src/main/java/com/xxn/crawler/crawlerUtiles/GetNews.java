@@ -40,16 +40,16 @@ public class GetNews implements PageProcessor{
         Html html = page.getHtml();
         //获取新闻页面的title；
         String title = html.css("#d-container > div > div.infobox > div > h1", "text").get();
-//        title = title + "</br>";
         page.putField("标题", title);
+
         String source = html.css("#d-container > div > div.infobox > div > p > span:nth-child(1)", "text").get();
-//        source = source + "</br>";
         page.putField("来源", source);
+
         String publishTime = html.css("#d-container > div > div.infobox > div > p > span:nth-child(2)", "text").get();
-//        publishTime = publishTime + "</br>";
         page.putField("发布时间", publishTime);
-        List<String> text = html.xpath("//div[@class='wp_articlecontent']").all();
-        page.putField("文章内容",text);
+
+//        List<String> text = html.xpath("//div[@class='wp_articlecontent']").all();
+//        page.putField("文章内容",text);
 
         List<String> text1 = html.css("#d-container > div > div.infobox > div > div > div > div > p > span","text").all();
         List<String> text2 = html.css("#d-container > div > div.infobox > div > div > div > div > p","text").all();
@@ -60,13 +60,16 @@ public class GetNews implements PageProcessor{
         }
         for (String s : text2) {
             articleText +=s;
+            articleText +="</br>";
         }
+
+//        page.putField("articleText", articleText);
         // 创建一个新的 News 对象，并设置数据
         news = new News();
         news.setTitle(title);
         news.setContent(articleText);
         news.setTime(publishTime);
-
+        news.setSource(source);
 
     }
 
@@ -79,7 +82,6 @@ public class GetNews implements PageProcessor{
         spider = Spider.create(this)
                 //设置url
                 .addUrl(url)
-                //设置布隆过滤器
                 .thread(1);
 
         // 创建一个线程来运行spider

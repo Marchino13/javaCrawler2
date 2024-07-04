@@ -21,14 +21,31 @@ import java.io.Serializable;
 
 //@Data
 public class News implements Serializable {
-    private String  title;
+    private String title;
     private String content;
     private String time;
+    private String source;
 
-    public News(String title, String content, String time) {
+
+//    public News(String title, String content, String time) {
+//        this.title = title;
+//        this.content = content;
+//        this.time = time;
+//    }
+
+    public News(String title, String content, String time, String source) {
         this.title = title;
         this.content = content;
         this.time = time;
+        this.source = source;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
     }
 
     public String getTitle() {
