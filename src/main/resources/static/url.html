@@ -1,104 +1,133 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>爬虫网页</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>王子请爪巴 🐾</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
         }
+
         .container {
+            background-color: #ffffff;
+            border-radius: 15px;
+            padding: 40px;
+            width: 90%;
             max-width: 600px;
-            margin: 100px auto;
-            background-color: #fff;
-            border: 1px solid #ccc;
-            padding: 20px;
             text-align: center;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            margin-top: 10vh;
         }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 36px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
         .input-group {
-            margin: 10px 0;
-            text-align: center;
+            margin: 20px 0;
         }
+
         input[type="text"] {
-            padding: 10px;
-            width: 70%;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 14px;
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #4CAF50;
+            border-radius: 50px;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
             box-sizing: border-box;
         }
-        button {
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            cursor: pointer;
-            border-radius: 4px;
-            font-size: 14px;
+
+        input[type="text"]:focus {
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.4);
         }
-        button:hover {
-            background-color: #0056b3;
+
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border: none;
+            border-radius: 50px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+
+        .icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+            color: #4CAF50;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 80px; /* 增加按钮之间的间距 */
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
 <div class="container">
-    <h1 style="margin-bottom: 20px;">王子请爪巴</h1>
+    <div class="icon">🐾</div>
+    <h1>王子请爪巴</h1>
     <div class="input-group">
         <input type="text" id="url" placeholder="请输入URL">
     </div>
-    <div class="input-group">
-        <button onclick="getUrl()">确认</button>
+    <div class="btn-group">
+        <button class="btn" onclick="returnToIndex()">返回首页</button>
+        <button class="btn" onclick="getUrl()">开始抓取</button>
     </div>
-
 </div>
-
 <script>
-    function myFunction(name,job){
-        alert("Welcome " + name + ", the " + job);
-    }
     function getUrl() {
-        var url = document.getElementById("url").value.trim();  // 获取输入框中的值 并去除首尾空格
-        // if (!url) {
-        //     alert("请输入URL");
-        //     return;
-        // }
-
+        var url = document.getElementById("url").value.trim();
+        if (!url) {
+            alert("请输入URL");
+            return;
+        }
         fetch("/crawler/getAllByUrl", {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            // body: JSON.stringify({url: url})
-            body: url            // url为字符串形式
-        })
-            // .then(response => {
-            //     if (!response.ok) {
-            //         throw new Error('网络错误或服务器错误');
-            //     }
-            //     return response.json();
-            // })
+            headers: {'Content-Type': 'application/json'},
+            body: url
+        }).then(response => {
+            if (!response.ok) {
+                throw new Error('网络错误或服务器错误');
+            }
+            return response.text();
+        }).then(testData => {
+            if (testData === "Success") {
+                location.href = '/getInfo.html'
+            } else {
+                alert("抓取失败 是什么原因呢~")
+            }
+        }).catch(error => {
+            console.error('Error:', error);
+            alert("发生错误，请稍后再试");
+        });
+    }
 
-            .then(res => {
-                console.log(res)
-                // 在获取数据后执行页面跳转到 waitInfo.html 页面
-                // window.location.href = '/waitInfo.html';
-
-                return res.text() // 获取后台返回的数据
-            }) //对res进行处理
-            .then(testData => { // res就是后台返回的结果
-                if(testData === "Success"){ // 判断请求是否成功
-                    location.href = '/getInfo.html'
-                }else{
-                    alert("抓取失败 是什么原因呢~")
-                }
-            })
+    function returnToIndex() {
+        window.location.href = 'index.html';
     }
 </script>
 </body>

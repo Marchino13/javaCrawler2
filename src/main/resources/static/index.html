@@ -1,6 +1,113 @@
-<html>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>欢迎来到爪巴 🐾</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; /* 改为 flex-start */
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+
+        .title {
+            font-size: 48px;
+            color: #2c3e50;
+            margin-top: 10vh; /* 添加上边距 */
+            margin-bottom: 40px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 1s ease-out;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-around;
+            width: 90%;
+            max-width: 1000px;
+            margin-bottom: 5vh; /* 添加下边距 */
+        }
+
+        .option {
+            background-color: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            width: 40%;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        .option:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        h2 {
+            color: #34495e;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 40px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .btn:hover {
+            background-color: #2980b9;
+            transform: scale(1.05);
+        }
+
+        .icon {
+            font-size: 70px;
+            margin-bottom: 20px;
+            color: #3498db;
+            transition: all 0.3s ease;
+        }
+
+        .option:hover .icon {
+            transform: scale(1.1);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+</head>
 <body>
-<h1>hello word!!!222</h1>
-<p>this is a html page</p>
+<h1 class="title">欢迎来到爪巴 🐾</h1>
+<div class="container">
+    <div class="option">
+        <div class="icon">⏰</div>
+        <h2>定时抓取</h2>
+        <a href="time_url.html" class="btn">进入</a>
+    </div>
+    <div class="option">
+        <div class="icon">🚀</div>
+        <h2>立即抓取</h2>
+        <a href="url.html" class="btn">进入</a>
+    </div>
+</div>
 </body>
 </html>

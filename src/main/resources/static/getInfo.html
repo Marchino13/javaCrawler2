@@ -1,93 +1,118 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>爬虫网页</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>抓取成功 🎉</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* 改为 flex-start */
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
         }
+
         .container {
+            background-color: #ffffff;
+            border-radius: 15px;
+            padding: 40px;
+            width: 90%;
             max-width: 600px;
-            margin: 100px auto;
-            background-color: #fff;
-            border: 1px solid #ccc;
-            padding: 20px;
             text-align: center;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            margin-top: 10vh; /* 添加上边距 */
         }
-        .input-group {
-            margin: 10px 0;
-            text-align: center;
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 36px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
         }
-        input[type="text"] {
-            padding: 10px;
-            width: 70%;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 14px;
-            box-sizing: border-box;
+
+        p {
+            color: #666;
+            font-size: 18px;
+            margin-bottom: 30px;
         }
-        button {
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: #fff;
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap; /* 添加此行以确保在小屏幕上按钮能够换行 */
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
             border: none;
+            border-radius: 50px;
+            font-size: 18px;
             cursor: pointer;
-            border-radius: 4px;
-            font-size: 14px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
         }
-        button:hover {
-            background-color: #0056b3;
+
+        .btn:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+
+        .icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+            color: #4CAF50;
         }
     </style>
 </head>
 <body>
 <div class="container">
-    <h1 style="margin-bottom: 20px;">抓取成功</h1>
-    <p>页面将在十分钟后自动跳转，或者您可以点击下面的按钮立即返回：</p>
-    <div class="input-group">
-        <button onclick="returnNow()">返回</button>
-        <button onclick="previewData()">预览</button>
-        <button onclick="downloadData()">下载</button>
+    <div class="icon">🎉</div>
+    <h1>抓取成功</h1>
+    <p>页面将在十分钟后自动跳转，或者您可以点击下面的按钮：</p>
+    <div class="btn-group">
+        <button class="btn" onclick="returnNow()">返回</button>
+        <button class="btn" onclick="previewData()">预览</button>
+        <button class="btn" onclick="downloadData()">下载</button>
     </div>
-
 </div>
-
 <script>
-    // 定义立即返回的函数
     function returnNow() {
         window.location.href = 'url.html';
     }
 
-    // 定义预览数据的函数
     function previewData() {
         window.location.href = 'showInfo.html';
     }
 
-    // 定义下载数据的函数
     function downloadData() {
-        // 在这里实现下载数据的逻辑
         fetch("/crawler/download", {
-            method: 'POST',
-            headers: {
-            'Content-Type': 'application/json'
-        },
-            body:""
-    })
-        alert('数据下载中');
+            method: 'GET',
+            headers: {'Content-Type': 'application/json'},
+            body: ""
+        }).then(response => {
+            if (response.ok) {
+                alert('数据下载中');
+            } else {
+                alert('下载失败，请稍后再试');
+            }
+        }).catch(error => {
+            console.error('Error:', error);
+            alert('下载出错，请稍后再试');
+        });
     }
 
-    // 定义定时器，在十分钟后自动跳转
-    setTimeout(function() {
+    setTimeout(function () {
         window.location.href = 'url.html';
-    }, 10 * 60 * 1000); // 十分钟 = 10 * 60 * 1000 毫秒
+    }, 10 * 60 * 1000);
 </script>
-
 </body>
 </html>
