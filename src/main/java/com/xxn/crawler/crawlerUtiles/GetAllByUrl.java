@@ -90,8 +90,16 @@ public class GetAllByUrl implements PageProcessor {
         return null;
     }
 
+    /***
+     * @description 暂停
+     * @param: 
+     * @return void
+     * @author Marchino
+     * @date 9:10 2024/7/4
+     */
     public void stop() {
         spider.stop();
+        
     }
 
 
