@@ -35,10 +35,8 @@ public class GetImage implements PageProcessor {
     @Override
     public void process(Page page) {
         Html html = page.getHtml();
-        List<String> allImages = html.xpath("//*[@id=\"J_focus\"]/div[2]/div/div/div/div[1]/div/li[1]/a/img").all();
-        page.putField("图片连接",allImages);
-
-
+        List<String> allImages = html.regex("//*[@id=\"J_focus\"]/img").all();
+        page.putField("图片链接",allImages);
     }
 
     @Override
