@@ -35,7 +35,7 @@ public class TaskGetImage {
 
     private void process() {
         System.out.println("基于接口定时任务");
-        String start = spider.start();
+//        String start = spider.start();
 
         //TODO 下载
 

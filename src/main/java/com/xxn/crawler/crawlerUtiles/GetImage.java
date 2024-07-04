@@ -18,10 +18,13 @@ import us.codecraft.webmagic.pipeline.FilePipeline;
 import us.codecraft.webmagic.processor.PageProcessor;
 import us.codecraft.webmagic.selector.Html;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,8 +39,8 @@ public class GetImage implements PageProcessor {
     private String url;
     private String path;
     private Spider spider;
-    public static String imageSiteUrl = "https://www.nipic.com/topic/show_27202_1.html";
 
+    ArrayList<BufferedImage> images = new ArrayList<>();
     public GetImage() {
     }
 
@@ -52,27 +55,26 @@ public class GetImage implements PageProcessor {
         List<String> all = html.$("img","src").regex(".*https.*").all();
         page.putField("url", all);
 
-        downLoadImg(imageSiteUrl);
+        downLoadImg(url);
     }
 
-    public void downLoadImg(String imageSiteUrl){
+    public ArrayList<BufferedImage> downLoadImg(String imageSiteUrl){
+
         try {
             Document document = Jsoup.connect(imageSiteUrl).get();
             Elements elements = document.select("li.new-search-works-item");
             for (int i = 0; i < elements.size(); i++) {
                 Elements select = elements.get(i).select("a > img");
                 Connection.Response response = Jsoup.connect("https:" + select.attr("src")).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 Edg/126.0.0.0").ignoreContentType(true).execute();
-                //添加ip代理版本Jsoup.connect(select.attr("src")).proxy().execute();
-                //模拟浏览器Jsoup.connect(select.attr("src")).userAgent().execute();
-                String name = select.attr("alt");
-                ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(response.bodyAsBytes());
-//                Image image = new Image();
 
-                FileUtils.copyInputStreamToFile(byteArrayInputStream,new File("D://fileitem//" + name + ".png"));
+                ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(response.bodyAsBytes());
+                BufferedImage image = ImageIO.read(byteArrayInputStream);
+                images.add(image);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        return images;
     }
 
     @Override
@@ -80,12 +82,11 @@ public class GetImage implements PageProcessor {
         return Site.me();
     }
 
-    public String start() {
-        spider = Spider.create(new GetImage())
+    public ArrayList<BufferedImage> start() {
+        spider = Spider.create(this)
                 .addUrl(url)
-                .addPipeline(new FilePipeline(path))
                 .thread(5);
         spider.start();
-        return null;
+        return images;
     }
 }

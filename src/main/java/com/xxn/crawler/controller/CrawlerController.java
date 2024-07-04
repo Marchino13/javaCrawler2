@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 /**
  *
@@ -20,8 +22,7 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("/crawler")
 public class CrawlerController {
 
-    @Autowired
-    private GetNews getNews;
+
 
     /***
      * @description
@@ -34,8 +35,7 @@ public class CrawlerController {
     @PostMapping("/getAllByUrl")
     public String getByUrl(HttpSession session, @RequestBody String url) {
 
-
-        getNews = new GetNews(url, null);
+        GetNews getNews = new GetNews(url, null);
         News news = getNews.start();
 
         session.setAttribute("news", news);
@@ -44,38 +44,18 @@ public class CrawlerController {
 
 
     /***
-     * @description
-     * @param: initialDelay
- * @param: period 每多少秒执行一次
- * @param: url 抓取的url
- * @param: path 保存地址
- * @param: flag 抓取图片还是文章
+     * @description 下载新闻
+     * @param: session
+ * @param: httpServletResponse
      * @return void
      * @author Marchino
-     * @date 11:52 2024/7/4
+     * @date 17:04 2024/7/4
      */
-    @GetMapping("/startScheduledCrawler")
-    public void ScheduledCrawler(int interval, String url, String path, boolean flag) {
-        if (flag){//定时抓取文章
-            GetNews news = new GetNews(url, null);
-            MyTask myTask = new MyTask(0, interval, path, news);
-            myTask.startTask();
-        }else {//定时抓取图片
-            GetImage image = new GetImage(url, null);
-            TaskGetImage taskGetImage = new TaskGetImage(0, interval, path, image);
-            taskGetImage.startTask();
-        }
-        
-    }
-
-    //TODO 下载
     @PostMapping("/download")
     public void download(HttpSession session, HttpServletResponse httpServletResponse) {
         News news = (News) session.getAttribute("news");
 
         PdfUtil.downloadNews(news.getTitle(), news.getTime(), news.getContent(), httpServletResponse);
-
-
 
 
     }
@@ -94,6 +74,39 @@ public class CrawlerController {
         News news = (News) attribute;
         System.out.println(news.getTitle());
         return news;
+    }
+
+    @PostMapping("/getImage")
+    public String getImage(@RequestBody String url, HttpSession session){
+        GetImage getImages = new GetImage("https://www.nipic.com/", "D:\\test\\pic");
+        ArrayList<BufferedImage> images = getImages.start();
+        session.setAttribute("images", images);
+        return "Success";
+    }
+
+    /***
+     * @description
+     * @param: initialDelay
+     * @param: period 每多少秒执行一次
+     * @param: url 抓取的url
+     * @param: path 保存地址
+     * @param: flag 抓取图片还是文章
+     * @return void
+     * @author Marchino
+     * @date 11:52 2024/7/4
+     */
+    @GetMapping("/startScheduledCrawler")
+    public void ScheduledCrawler(int interval, String url, String path, boolean flag) {
+//        if (flag){//定时抓取文章
+//            GetNews news = new GetNews(url, null);
+//            MyTask myTask = new MyTask(0, interval, path, news);
+//            myTask.startTask();
+//        }else {//定时抓取图片
+//            GetImage image = new GetImage(url, null);
+//            TaskGetImage taskGetImage = new TaskGetImage(0, interval, path, image);
+//            taskGetImage.startTask();
+//        }
+
     }
 
 }
