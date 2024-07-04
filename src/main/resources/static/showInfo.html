@@ -9,6 +9,31 @@
 <div id="sessionData"></div>
 
 <script>
+    //轮训函数
+    function checkTaskStatus() {
+        fetch("/crawler/checkStatus", {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => response.json())
+            .then(status => {
+                if (status === "Success") {
+                    window.location.href = '/getInfo.html';
+                } else if (status === "Failed") {
+                    alert("抓取失败 是什么原因呢~");
+                } else {
+                    setTimeout(checkTaskStatus, 500); // 继续轮询
+                }
+            })
+            .catch(error => {
+                console.error("请求出错:", error);
+            });
+    }
+    // 初始调用
+    checkTaskStatus();
+
     function fetchSessionData(attribute) {
         fetch(`/crawler/get?attribute=${attribute}`)
             .then(response => response.text())
@@ -22,7 +47,7 @@
     }
 
     // 例如，获取名为 'username' 的会话属性
-    fetchSessionData('username');
+    // fetchSessionData('test');
 </script>
 </body>
 </html>
