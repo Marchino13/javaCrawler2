@@ -66,7 +66,7 @@ public class GetImage implements PageProcessor {
                 //模拟浏览器Jsoup.connect(select.attr("src")).userAgent().execute();
                 String name = select.attr("alt");
                 ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(response.bodyAsBytes());
-                Image image = new Image();
+//                Image image = new Image();
 
                 FileUtils.copyInputStreamToFile(byteArrayInputStream,new File("D://fileitem//" + name + ".png"));
             }
