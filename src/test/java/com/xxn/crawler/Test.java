@@ -10,7 +10,7 @@ public class Test {
     public static void main(String[] args) {
 //        GetAllByUrl getAllByUrl = new GetAllByUrl("https://www.jd.com/", "D:\\test");
 //        getAllByUrl.start();
-        GetNews getNews = new GetNews("https://www.hhu.edu.cn/2024/0703/c166a285773/page.htm","D:\\test");
+        GetNews getNews = new GetNews("https://www.hhu.edu.cn/2024/0629/c166a285661/page.htm","D:\\test");
         getNews.start();
 
     }
