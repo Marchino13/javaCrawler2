@@ -9,6 +9,8 @@ import us.codecraft.webmagic.pipeline.FilePipeline;
 import us.codecraft.webmagic.processor.PageProcessor;
 import us.codecraft.webmagic.selector.Html;
 
+import java.util.List;
+
 /**
  *
  * @author Marchino
@@ -33,8 +35,9 @@ public class GetImage implements PageProcessor {
     @Override
     public void process(Page page) {
         Html html = page.getHtml();
-        String src = html.css("a img", "src").get().toString();
-        page.putField("src", src);
+        List<String> allImages = html.xpath("//*[@id=\"J_focus\"]/div[2]/div/div/div/div[1]/div/li[1]/a/img").all();
+        page.putField("图片连接",allImages);
+
 
     }
 

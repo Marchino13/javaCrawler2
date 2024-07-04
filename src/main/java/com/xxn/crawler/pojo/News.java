@@ -19,19 +19,11 @@ import java.io.Serializable;
  * @date 8:44 2024/7/4
  */
 
+//@Data
 public class News implements Serializable {
     private String  title;
     private String content;
     private String time;
-
-    public News(String title, String content, String time) {
-        this.title = title;
-        this.content = content;
-        this.time = time;
-    }
-
-    public News() {
-    }
 
     public String getTitle() {
         return title;
