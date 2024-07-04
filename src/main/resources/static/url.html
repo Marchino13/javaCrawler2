@@ -56,16 +56,19 @@
     <div class="input-group">
         <button onclick="getUrl()">确认</button>
     </div>
+
 </div>
 
 <script>
+    function myFunction(name,job){
+        alert("Welcome " + name + ", the " + job);
+    }
     function getUrl() {
         var url = document.getElementById("url").value.trim();  // 获取输入框中的值 并去除首尾空格
-
-        if (!url) {
-            alert("请输入URL");
-            return;
-        }
+        // if (!url) {
+        //     alert("请输入URL");
+        //     return;
+        // }
 
         fetch("/crawler/getAllByUrl", {
             method: 'POST',
@@ -81,14 +84,17 @@
             //     }
             //     return response.json();
             // })
+
             .then(res => {
                 console.log(res)
+                // 在获取数据后执行页面跳转到 waitInfo.html 页面
+                // window.location.href = '/waitInfo.html';
+
                 return res.text() // 获取后台返回的数据
-            })    //对res进行处理
-            .then(res => { // res就是后台返回的结果
-                console.log(res)
-                if(res === "Success"){ // 判断请求是否成功
-                    location.href = '/showInfo.html'
+            }) //对res进行处理
+            .then(testData => { // res就是后台返回的结果
+                if(testData === "Success"){ // 判断请求是否成功
+                    location.href = '/getInfo.html'
                 }else{
                     alert("抓取失败 是什么原因呢~")
                 }
