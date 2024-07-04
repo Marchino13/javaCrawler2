@@ -15,6 +15,7 @@ public class TaskGetNews {
     private long period;
     private String savePath;//保存路径
     private GetNews spider;
+    private int i = 0;
 
     public TaskGetNews(long initialDelay, long period, String savePath, GetNews spider) {
         this.initialDelay = initialDelay;
@@ -39,7 +40,8 @@ public class TaskGetNews {
     private void process() {
         System.out.println("基于接口定时任务");
         News news = spider.start();
-        PdfUtil.newsTopdf(news.getTitle(), news.getTime(), news.getContent(), savePath);
 
+        PdfUtil.newsTopdf(news.getTitle(), news.getTime(), news.getContent(), savePath + i + ".pdf");
+        i++;
     }
 }

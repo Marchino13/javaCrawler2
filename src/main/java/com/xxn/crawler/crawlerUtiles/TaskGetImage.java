@@ -2,6 +2,8 @@ package com.xxn.crawler.crawlerUtiles;
 
 import com.xxn.crawler.pojo.News;
 
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -12,6 +14,7 @@ public class TaskGetImage {
     private long period;
     private String savePath;//保存路径
     private GetImage spider;
+    private int i = 0;
 
     public TaskGetImage(long initialDelay, long period, String savePath, GetImage spider) {
         this.initialDelay = initialDelay;
@@ -35,7 +38,8 @@ public class TaskGetImage {
 
     private void process() {
         System.out.println("基于接口定时任务");
-//        String start = spider.start();
+        ArrayList<BufferedImage> start = spider.start();
+
 
         //TODO 下载
 
