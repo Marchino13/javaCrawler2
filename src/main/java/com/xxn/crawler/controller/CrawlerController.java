@@ -6,10 +6,13 @@ import com.xxn.crawler.result.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.*;
 
 /**
  *
@@ -21,20 +24,9 @@ import java.util.ArrayList;
 @RestController
 @RequestMapping("/crawler")
 public class CrawlerController {
-
-
-
-    /***
-     * @description
-     * @param: url 要爬取的网站url
-     * @param: path 保存路径
-     * @return com.xxn.crawler.result.Result<java.lang.String>
-     * @author Marchino
-     * @date 21:56 2024/7/3
-     */
-    @PostMapping("/getAllByUrl")
+    // 输入抓取新闻URL
+    @PostMapping("/getWord")
     public String getByUrl(HttpSession session, @RequestBody String url) {
-
         GetNews getNews = new GetNews(url, null);
         News news = getNews.start();
 
@@ -42,33 +34,8 @@ public class CrawlerController {
         return "Success";
     }
 
-
-    /***
-     * @description 下载新闻
-     * @param: session
- * @param: httpServletResponse
-     * @return void
-     * @author Marchino
-     * @date 17:04 2024/7/4
-     */
-    @PostMapping("/download")
-    public void download(HttpSession session, HttpServletResponse httpServletResponse) {
-        News news = (News) session.getAttribute("news");
-
-        PdfUtil.downloadNews(news.getTitle(), news.getTime(), news.getContent(), httpServletResponse);
-
-
-    }
-
-    /***
-     * @description 预览
-     * @param: session
-     * @return com.xxn.crawler.pojo.News
-     * @author Marchino
-     * @date 10:13 2024/7/4
-     */
-
-    @GetMapping("/preview")
+    // 新闻预览
+    @GetMapping("/previewWord")
     public News getSessionNews(HttpSession session) {
         Object attribute = session.getAttribute("news");
         News news = (News) attribute;
@@ -76,8 +43,17 @@ public class CrawlerController {
         return news;
     }
 
+    // 下载新闻
+    @PostMapping("/downloadWord")
+    public void download(HttpSession session, HttpServletResponse httpServletResponse) {
+        News news = (News) session.getAttribute("news");
+
+        PdfUtil.downloadNews(news.getTitle(), news.getTime(), news.getContent(), httpServletResponse);
+    }
+
+    // 输入抓取图片url
     @PostMapping("/getImage")
-    public String getImage(@RequestBody String url, HttpSession session){
+    public String getImage(HttpSession session, @RequestBody String url){
         GetImage getImages = new GetImage("https://www.nipic.com/", "D:\\test\\pic");
         ArrayList<String> images = getImages.start();
         session.setAttribute("images", images);
@@ -106,4 +82,6 @@ public class CrawlerController {
         }
 
     }
+
+
 }

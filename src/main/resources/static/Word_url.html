@@ -126,7 +126,7 @@
         // 显示加载指示器
         document.getElementById("loader").style.display = "block";
 
-        fetch("/crawler/getAllByUrl", {
+        fetch("/crawler/getWord", {
             method: 'POST',
             headers: {
                 'Content-Type': 'text/plain' // 指定发送的数据类型为纯文本

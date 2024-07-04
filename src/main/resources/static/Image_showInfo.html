@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>新闻预览 🗞️</title>
+    <title>图片预览 📸</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -35,20 +35,21 @@
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        .news-item {
+        .image-item {
             background-color: #f9f9f9;
             border-radius: 10px;
             padding: 20px;
             margin-bottom: 20px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
             transition: transform 0.3s ease;
+            text-align: center;
         }
 
-        .news-item:hover {
+        .image-item:hover {
             transform: translateY(-5px);
         }
 
-        .news-title {
+        .image-title {
             font-size: 22px;
             color: #4CAF50;
             margin-bottom: 15px;
@@ -56,14 +57,14 @@
             padding-bottom: 10px;
         }
 
-        .news-content {
+        .image-content {
             font-size: 16px;
             color: #555;
             margin-bottom: 15px;
             line-height: 1.6;
         }
 
-        .news-time {
+        .image-time {
             font-size: 14px;
             color: #888;
             text-align: right;
@@ -121,93 +122,87 @@
             background-color: #45a049;
             transform: scale(1.05);
         }
+
+        .image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
     </style>
 </head>
 <body>
 <div class="container">
-    <div class="icon">🗞️</div>
-    <h1>新闻预览</h1>
-    <div id="newsContainer"></div>
+    <div class="icon">📸</div>
+    <h1>图片预览</h1>
+    <div id="imageContainer"></div>
     <div class="btn-group">
         <button class="btn" onclick="returnToUrl()">返回URL页面</button>
-        <button class="btn" onclick="downloadPDF()">下载PDF</button>
+        <button class="btn" onclick="downloadImages()">下载图片</button>
     </div>
 </div>
 
 <script>
-    function displayNews(news) {
-        const newsContainer = document.getElementById('newsContainer');
+    function displayImages(images) {
+        const imageContainer = document.getElementById('imageContainer');
 
-        if (Array.isArray(news) && news.length > 0) {
+        if (Array.isArray(images) && images.length > 0) {
             let html = '';
-            news.forEach((item, index) => {
+            images.forEach((item, index) => {
                 html += `
-                    <div class="news-item">
+                    <div class="image-item">
                         <div class="source-tag">来源 ${index + 1}</div>
-                        <h2 class="news-title">${item.title || '无标题'}</h2>
-                        <p class="news-content">${item.content || '无内容'}</p>
-                        <div class="news-time">${item.time || '未知时间'}</div>
+                        <img src="${item.url}" alt="${item.title || '图片'}" class="image">
+                        <h2 class="image-title">${item.title || '无标题'}</h2>
+                        <p class="image-content">${item.description || '无描述'}</p>
+                        <div class="image-time">${item.time || '未知时间'}</div>
                     </div>
                 `;
             });
-            newsContainer.innerHTML = html;
-        } else if (news && typeof news === 'object') {
-            newsContainer.innerHTML = `
-                <div class="news-item">
-                    <div class="source-tag">单一来源</div>
-                    <h2 class="news-title">${news.title || '无标题'}</h2>
-                    <p class="news-content">${news.content || '无内容'}</p>
-                    <div class="news-time">${news.time || '未知时间'}</div>
-                </div>
-            `;
+            imageContainer.innerHTML = html;
         } else {
-            newsContainer.innerHTML = '<p class="error">无有效数据</p>';
+            imageContainer.innerHTML = '<p class="error">无有效数据</p>';
         }
     }
 
     function checkTaskStatus() {
-        fetch("/crawler/previewWord")
+        fetch("/crawler/previewImages")
             .then(response => {
                 if (!response.ok) {
                     throw new Error('网络响应不正常');
                 }
                 return response.json();
             })
-            .then(news => {
-                console.log(news);
-                displayNews(news);
+            .then(images => {
+                console.log(images);
+                displayImages(images);
             })
             .catch(error => {
                 console.error('Error:', error);
-                document.getElementById('newsContainer').innerHTML = `<p class="error">获取数据时出错: ${error.message}</p>`;
+                document.getElementById('imageContainer').innerHTML = `<p class="error">获取数据时出错: ${error.message}</p>`;
             });
     }
 
     function returnToUrl() {
-        window.location.href = 'Word_url.html';
+        window.location.href = 'Image_url.html';
     }
 
-    function downloadPDF() {
-        fetch("/crawler/downloadWord", {
-            method: 'Post',
+    function downloadImages() {
+        fetch("/crawler/downloadImages", {
+            method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: ""
         }).then(response => {
             if (response.ok) {
-                return response.blob();  // 将响应体转换为 Blob 对象
+                return response.blob();
             } else {
-                throw new Error('Download failed');
+                throw new Error('下载失败');
             }
         }).then(blob => {
-            // 创建一个新的 URL 对象
             const url = window.URL.createObjectURL(blob);
-            // 创建一个新的 a 元素
             const a = document.createElement('a');
-            // 设置 a 元素的 href 属性
             a.href = url;
-            // 设置 a 元素的 download 属性
-            a.download = 'news.pdf';
-            // 触发 a 元素的 click 事件
+            a.download = 'images.zip';
             a.click();
         }).catch(error => {
             console.error('Error:', error);
