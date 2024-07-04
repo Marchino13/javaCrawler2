@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>王子请爪巴 - 图片抓取 🖼️</title>
+    <title>公主请爪巴</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -139,12 +139,12 @@
         }).then(result => {
             // 隐藏加载指示器
             document.getElementById("loader").style.display = "none";
-
-            if (result === "Success") {
-                location.href = '/Image_getInfo.html'
-            } else {
-                alert("图片抓取失败，请检查URL或稍后再试")
-            }
+            location.href = '/Image_getInfo.html'
+            // if (result === "Success") {
+            //     location.href = '/Image_getInfo.html'
+            // } else {
+            //     alert("图片抓取失败，请检查URL或稍后再试")
+            // }
         }).catch(error => {
             // 隐藏加载指示器
             document.getElementById("loader").style.display = "none";
