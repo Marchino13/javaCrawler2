@@ -70,7 +70,10 @@ public class CrawlerController {
 
     @GetMapping("/preview")
     public News getSessionNews(HttpSession session) {
-        return (News) session.getAttribute("news");
+        Object attribute = session.getAttribute("test");
+        News news = (News) attribute;
+        System.out.println(news.getTitle());
+        return (News) session.getAttribute("test");
     }
 
 }

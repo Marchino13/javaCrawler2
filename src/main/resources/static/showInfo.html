@@ -11,40 +11,27 @@
 <script>
     //轮训函数
     function checkTaskStatus() {
-        fetch("/crawler/checkStatus", {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
+        fetch("/crawler/preview")
             .then(response => response.json())
-            .then(status => {
-                if (status === "Success") {
-                    window.location.href = '/getInfo.html';
-                } else if (status === "Failed") {
-                    alert("抓取失败 是什么原因呢~");
-                } else {
-                    setTimeout(checkTaskStatus, 500); // 继续轮询
-                }
-            })
-            .catch(error => {
-                console.error("请求出错:", error);
+            .then(news => {
+                console.log(news);
+                // 在这里处理news对象
             });
     }
     // 初始调用
     checkTaskStatus();
 
-    function fetchSessionData(attribute) {
-        fetch(`/crawler/get?attribute=${attribute}`)
-            .then(response => response.text())
-            .then(data => {
-                const sessionDataDiv = document.getElementById('sessionData');
-                sessionDataDiv.innerHTML = `<p>${attribute}: ${data}</p>`;
-            })
-            .catch(error => {
-                console.error('Error fetching session data:', error);
-            });
-    }
+    // function fetchSessionData(attribute) {
+    //     fetch(`/crawler/get?attribute=${attribute}`)
+    //         .then(response => response.text())
+    //         .then(data => {
+    //             const sessionDataDiv = document.getElementById('sessionData');
+    //             sessionDataDiv.innerHTML = `<p>${attribute}: ${data}</p>`;
+    //         })
+    //         .catch(error => {
+    //             console.error('Error fetching session data:', error);
+    //         });
+    // }
 
     // 例如，获取名为 'username' 的会话属性
     // fetchSessionData('test');
