@@ -39,8 +39,9 @@ public class CrawlerController {
 //        String stringJson = spider.start();
 
 //        session.setAttribute("news", news);
-        session.setAttribute("test", "test");
-                System.out.println(url);
+        News news = new News("title", "content", "time");
+        session.setAttribute("test", news);
+        System.out.println(url);
         return "Success";
     }
 
@@ -57,6 +58,22 @@ public class CrawlerController {
     public void download() {
         spider = new GetAllByUrl("https://www.baidu.com/", "D:\\test");
         spider.start();
+    }
+
+    /***
+     * @description 预览
+     * @param: session
+     * @return com.xxn.crawler.pojo.News
+     * @author Marchino
+     * @date 10:13 2024/7/4
+     */
+
+    @GetMapping("/preview")
+    public News getSessionNews(HttpSession session) {
+        Object attribute = session.getAttribute("test");
+        News news = (News) attribute;
+        System.out.println(news.getTitle());
+        return (News) session.getAttribute("test");
     }
 
 }
