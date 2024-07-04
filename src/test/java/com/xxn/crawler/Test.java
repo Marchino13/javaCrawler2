@@ -9,11 +9,11 @@ import us.codecraft.webmagic.selector.Html;
 
 public class Test {
     public static void main(String[] args) {
-//        GetAllByUrl getAllByUrl = new GetAllByUrl("https://www.jd.com/", "D:\\test");
-//        getAllByUrl.start();
-        GetNews getNews = new GetNews("https://www.hhu.edu.cn/2024/0629/c166a285661/page.htm","D:\\test");
-        News start = getNews.start();
-        System.out.println(start.getTitle() + " " + start.getTime() + " " + start.getContent());
+        GetImage getImages = new GetImage("https://www.nipic.com/", "D:\\test\\pic");
+        getImages.start();
+//        GetNews getNews = new GetNews("https://www.hhu.edu.cn/2024/0629/c166a285661/page.htm","D:\\test");
+//        News start = getNews.start();
+//        System.out.println(start.getTitle() + " " + start.getTime() + " " + start.getContent());
 
     }
 }
