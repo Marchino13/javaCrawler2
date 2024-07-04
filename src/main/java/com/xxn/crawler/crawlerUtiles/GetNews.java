@@ -40,14 +40,14 @@ public class GetNews implements PageProcessor{
         Html html = page.getHtml();
         //获取新闻页面的title；
         String title = html.css("#d-container > div > div.infobox > div > h1", "text").get();
-
         page.putField("标题", title);
+
         String source = html.css("#d-container > div > div.infobox > div > p > span:nth-child(1)", "text").get();
-
         page.putField("来源", source);
-        String publishTime = html.css("#d-container > div > div.infobox > div > p > span:nth-child(2)", "text").get();
 
+        String publishTime = html.css("#d-container > div > div.infobox > div > p > span:nth-child(2)", "text").get();
         page.putField("发布时间", publishTime);
+
 //        List<String> text = html.xpath("//div[@class='wp_articlecontent']").all();
 //        page.putField("文章内容",text);
 
@@ -70,7 +70,6 @@ public class GetNews implements PageProcessor{
         news.setContent(articleText);
         news.setTime(publishTime);
         news.setSource(source);
-
 
     }
 
