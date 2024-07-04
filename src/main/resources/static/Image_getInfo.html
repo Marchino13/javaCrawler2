@@ -40,6 +40,39 @@
             margin-bottom: 30px;
         }
 
+        .input-group {
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .input-group label {
+            font-size: 18px;
+            color: #333;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .path-input {
+            flex-grow: 1;
+        }
+
+        .path-input input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #4CAF50;
+            border-radius: 50px;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .path-input input[type="text"]:focus {
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.4);
+        }
+
         .btn-group {
             display: flex;
             justify-content: center;
@@ -77,10 +110,15 @@
 <div class="container">
     <div class="icon">📸</div>
     <h1>图片抓取成功</h1>
+    <div class="input-group">
+        <label for="savePath">保存路径：</label>
+        <div class="path-input">
+            <input type="text" id="savePath" placeholder="请输入保存路径">
+        </div>
+    </div>
     <p>页面将在十分钟后自动跳转，或者您可以点击下面的按钮：</p>
     <div class="btn-group">
         <button class="btn" onclick="returnNow()">返回</button>
-        <button class="btn" onclick="previewImages()">预览</button>
         <button class="btn" onclick="downloadImages()">下载</button>
     </div>
 </div>
@@ -89,15 +127,13 @@
         window.location.href = 'Image_url.html';
     }
 
-    function previewImages() {
-        window.location.href = 'Image_showInfo.html';
-    }
-
     function downloadImages() {
+        var savePath = document.getElementById("savePath").value.trim();
+
         fetch("/crawler/downloadImages", {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: ""
+            body: savePath
         }).then(response => {
             if (response.ok) {
                 return response.blob();
