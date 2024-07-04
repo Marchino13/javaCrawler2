@@ -13,6 +13,7 @@ import us.codecraft.webmagic.selector.Html;
 import us.codecraft.webmagic.selector.Selectable;
 
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 /**
  *
@@ -26,6 +27,7 @@ public class GetAllByUrl implements PageProcessor {
     private String url;
     private String path;
     private Spider spider;
+    //TODO 添加一个list，用于存放抓取到的数据
 
     public GetAllByUrl() {
     }
@@ -36,6 +38,7 @@ public class GetAllByUrl implements PageProcessor {
     }
 
     private Site site = Site.me().setRetryTimes(1).setSleepTime(1000);
+
     @Override
     public void process(Page page) {
         //访问黑马的首页
@@ -62,17 +65,42 @@ public class GetAllByUrl implements PageProcessor {
      * @author Marchino
      * @date 21:59 2024/7/3
      */
-    public String start(){
+    public String start() {
         spider = Spider.create(new GetAllByUrl())
                 .addUrl(url)
                 .addPipeline(new FilePipeline(path))
-                .thread(5);
-        spider.start();
+                .thread(1);
+
+
+        // 创建一个线程来运行spider
+        Thread spiderThread = new Thread(spider);
+
+        // 启动spider线程
+        spiderThread.start();
+
+        // 等待spider线程执行完毕
+        try {
+            spiderThread.join();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt(); // 重新设置中断状态
+            e.printStackTrace();
+        }
+
+        System.out.println("Spider execution completed.");
         return null;
     }
 
-    public void stop(){
+    /***
+     * @description 暂停
+     * @param: 
+     * @return void
+     * @author Marchino
+     * @date 9:13 2024/7/4
+     */
+
+    public void stop() {
         spider.stop();
+        
     }
 
 

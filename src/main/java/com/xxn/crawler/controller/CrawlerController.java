@@ -1,10 +1,13 @@
 package com.xxn.crawler.controller;
 
 import com.xxn.crawler.crawlerUtiles.MyTask;
+import com.xxn.crawler.pojo.News;
 import com.xxn.crawler.result.Result;
 import com.xxn.crawler.crawlerUtiles.GetAllByUrl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -28,42 +31,32 @@ public class CrawlerController {
      * @author Marchino
      * @date 21:56 2024/7/3
      */
-
-//    private String taskStatus = "Pending"; // 任务状态：Pending, Success, Failed
     @PostMapping("/getAllByUrl")
-    public String getByUrl(@RequestBody String url) {
-//        taskStatus = "Pending"; // 重置任务状态
+    public String getByUrl(HttpSession session, @RequestBody String url) {
+//        spider = new GetAllByUrl(url, "D:\\test");
 
-        spider = new GetAllByUrl(url, "D:\\test");
-        String stringJson = spider.start();
-        try {
-            Thread.sleep(2000); // 暂停当前线程1秒钟
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-//        taskStatus = "Success";
+//        News news = new News();
+//        String stringJson = spider.start();
 
-        System.out.println(url);
+//        session.setAttribute("news", news);
+        session.setAttribute("test", "test");
+                System.out.println(url);
         return "Success";
     }
 
-    /***
-     * @description 停止爬取
-     * @param:
-     * @return com.xxn.crawler.result.Result<java.lang.String>
-     * @author Marchino
-     * @date 22:00 2024/7/3
-     */
-    public Result<String> stop() {
-        spider.stop();
-        return Result.success("爬取结束");
-    }
 
     @GetMapping("/startScheduledCrawler")
-    public void ScheduledCrawler() {
-        spider = new GetAllByUrl("https://www.baidu.com/", "D:\\test");
-        MyTask myTask = new MyTask(0L, 5L, spider);
+    public void ScheduledCrawler(int initialDelay, int period, String url, String path) {
+        spider = new GetAllByUrl(url, path);
+        MyTask myTask = new MyTask(initialDelay, period, null, spider);
         myTask.startTask();
+    }
+
+    //TODO 下载
+    @PostMapping("/download")
+    public void download() {
+        spider = new GetAllByUrl("https://www.baidu.com/", "D:\\test");
+        spider.start();
     }
 
 }

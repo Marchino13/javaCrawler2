@@ -10,12 +10,14 @@ public class MyTask {
 
     private long initialDelay;
     private long period;
+    private String savePath;//保存路径
     private GetAllByUrl spider;
 
-    public MyTask(long initialDelay, long period, GetAllByUrl spider) {
+    public MyTask(long initialDelay, long period, String savePath, GetAllByUrl spider) {
         this.initialDelay = initialDelay;
         this.period = period;
         this.spider = spider;
+        this.savePath = savePath;
     }
 
     private ScheduledExecutorService executorService;
@@ -34,6 +36,8 @@ public class MyTask {
     private void process() {
         System.out.println("基于接口定时任务");
         spider.start();
+
+        //TODO 下载
 
     }
 }
