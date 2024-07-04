@@ -1,5 +1,6 @@
 package com.xxn.crawler.crawlerUtiles;
 
+import com.xxn.crawler.pojo.News;
 import us.codecraft.webmagic.Spider;
 
 import java.util.concurrent.Executors;
@@ -11,9 +12,9 @@ public class MyTask {
     private long initialDelay;
     private long period;
     private String savePath;//保存路径
-    private GetAllByUrl spider;
+    private GetNews spider;
 
-    public MyTask(long initialDelay, long period, String savePath, GetAllByUrl spider) {
+    public MyTask(long initialDelay, long period, String savePath, GetNews spider) {
         this.initialDelay = initialDelay;
         this.period = period;
         this.spider = spider;
@@ -35,7 +36,9 @@ public class MyTask {
 
     private void process() {
         System.out.println("基于接口定时任务");
-        spider.start();
+        News start = spider.start();
+
+
 
         //TODO 下载
 

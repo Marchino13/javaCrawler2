@@ -1,10 +1,8 @@
 package com.xxn.crawler.controller;
 
-import com.xxn.crawler.crawlerUtiles.GetNews;
-import com.xxn.crawler.crawlerUtiles.MyTask;
+import com.xxn.crawler.crawlerUtiles.*;
 import com.xxn.crawler.pojo.News;
 import com.xxn.crawler.result.Result;
-import com.xxn.crawler.crawlerUtiles.GetAllByUrl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +20,7 @@ import javax.servlet.http.HttpSession;
 public class CrawlerController {
 
     @Autowired
-    private GetAllByUrl spider;
+    private GetNews getNews;
 
     /***
      * @description
@@ -34,28 +32,47 @@ public class CrawlerController {
      */
     @PostMapping("/getAllByUrl")
     public String getByUrl(HttpSession session, @RequestBody String url) {
-        spider = new GetAllByUrl(url, "D:\\test");
-        GetNews getNews = new GetNews(url, "D:\\test");
+
+
+        getNews = new GetNews(url, "D:\\test");
         News news = getNews.start();
 
         session.setAttribute("news", news);
-        System.out.println(url);
         return "Success";
     }
 
 
+    /***
+     * @description
+     * @param: initialDelay
+ * @param: period 每多少秒执行一次
+ * @param: url 抓取的url
+ * @param: path 保存地址
+ * @param: flag 抓取图片还是文章
+     * @return void
+     * @author Marchino
+     * @date 11:52 2024/7/4
+     */
     @GetMapping("/startScheduledCrawler")
-    public void ScheduledCrawler(int initialDelay, int period, String url, String path) {
-        spider = new GetAllByUrl(url, path);
-        MyTask myTask = new MyTask(initialDelay, period, null, spider);
-        myTask.startTask();
+    public void ScheduledCrawler(int initialDelay, int period, String url, String path, boolean flag) {
+        if (flag){//定时抓取文章
+            GetNews news = new GetNews();
+            MyTask myTask = new MyTask(initialDelay, period, path, news);
+            myTask.startTask();
+        }else {//定时抓取图片
+            GetImage image = new GetImage();
+            TaskGetImage taskGetImage = new TaskGetImage(initialDelay, period, path, image);
+            taskGetImage.startTask();
+        }
+        
     }
 
     //TODO 下载
     @PostMapping("/download")
-    public void download() {
-        spider = new GetAllByUrl("https://www.baidu.com/", "D:\\test");
-        spider.start();
+    public void download(HttpSession session) {
+        News news = (News) session.getAttribute("news");
+
+
     }
 
     /***
@@ -68,10 +85,10 @@ public class CrawlerController {
 
     @GetMapping("/preview")
     public News getSessionNews(HttpSession session) {
-        Object attribute = session.getAttribute("test");
+        Object attribute = session.getAttribute("news");
         News news = (News) attribute;
         System.out.println(news.getTitle());
-        return (News) session.getAttribute("test");
+        return news;
     }
 
 }
