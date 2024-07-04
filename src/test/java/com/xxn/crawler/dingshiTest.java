@@ -17,10 +17,10 @@ import org.springframework.stereotype.Component;
 public class dingshiTest {
 //    @Scheduled(cron = "0/3 * * * * ?")
     public static void main(String[] args) {
-//        GetNews getNews = new GetNews("https://www.hhu.edu.cn/2024/0702/c166a285722/page.htm", null);
-//
-//        new TaskGetNews(0, 3, "D:\\webmagic\\news", getNews).startTask();
+        GetNews getNews = new GetNews("https://www.hhu.edu.cn/2024/0702/c166a285722/page.htm", null);
 
-        new PdfUtil().newsTopdf("title", "time", "content", "D:\\webmagic\\news");
+        new TaskGetNews(0, 3, "D:\\webmagic\\news", getNews).startTask();
+
+
     }
 }
