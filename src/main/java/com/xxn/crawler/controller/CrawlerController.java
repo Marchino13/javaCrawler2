@@ -97,16 +97,16 @@ public class CrawlerController {
      */
     @GetMapping("/startScheduledCrawler")
     public void ScheduledCrawler(int interval, String url, String path, boolean flag) {
-//        if (flag){//定时抓取文章
-//            GetNews news = new GetNews(url, null);
-//            MyTask myTask = new MyTask(0, interval, path, news);
-//            myTask.startTask();
-//        }else {//定时抓取图片
-//            GetImage image = new GetImage(url, null);
-//            TaskGetImage taskGetImage = new TaskGetImage(0, interval, path, image);
-//            taskGetImage.startTask();
-//        }
+        if (flag){//定时抓取文章
+            GetNews news = new GetNews(url, null);
+            new TaskGetNews(0, interval, path, news).startTask();
+        }else {//定时抓取图片
+            GetImage image = new GetImage(url, null);
+            new TaskGetImage(0, interval, path, image).startTask();
+        }
 
     }
+
+    @
 
 }
