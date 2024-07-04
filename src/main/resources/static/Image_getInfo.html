@@ -80,8 +80,8 @@
     <p>页面将在十分钟后自动跳转，或者您可以点击下面的按钮：</p>
     <div class="btn-group">
         <button class="btn" onclick="returnNow()">返回</button>
-        <button class="btn" onclick="previewImages()">预览图片</button>
-        <button class="btn" onclick="downloadImages()">下载图片</button>
+        <button class="btn" onclick="previewImages()">预览</button>
+        <button class="btn" onclick="downloadImages()">下载</button>
     </div>
 </div>
 <script>
@@ -102,7 +102,7 @@
             if (response.ok) {
                 return response.blob();
             } else {
-                throw new Error('Download failed');
+                throw new Error('下载失败');
             }
         }).then(blob => {
             const url = window.URL.createObjectURL(blob);
