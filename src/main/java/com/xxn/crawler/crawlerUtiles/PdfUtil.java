@@ -22,10 +22,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class PdfUtil {
+    //将新闻内容转换成pdf， 保存到本地指定路径
     public static void newsTopdf(String title, String time, String content, String path) {
         PdfWriter writer;
 
@@ -63,25 +65,6 @@ public class PdfUtil {
         }
     }
 
-    public static void imageToPDF2(List<BufferedImage> images, String path) {
-        try {
-            PdfWriter writer = new PdfWriter(path);
-            PdfDocument pdfDoc = new PdfDocument(writer);
-            Document document = new Document(pdfDoc);
-
-            for (BufferedImage bufferedImage : images) {
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                ImageIO.write(bufferedImage, "png", baos);
-                byte[] bytes = baos.toByteArray();
-                Image image = new Image(ImageDataFactory.create(bytes));
-                document.add(image);
-            }
-
-            document.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
 
     //将包含一系列图片类型的list中图片一一取出并且转换成pdf
@@ -99,6 +82,25 @@ public class PdfUtil {
                 document.add(image);
                 // 加入图片
             }
+            document.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public static void downloadsImages(ArrayList<String> urls, HttpServletResponse response) {
+        try {
+            response.setContentType("application/pdf");
+            response.setHeader("Content-Disposition", "attachment; filename=images.pdf");
+
+            PdfWriter writer = new PdfWriter(response.getOutputStream());
+            PdfDocument pdf = new PdfDocument(writer);
+            Document document = new Document(pdf);
+
+            for (String url : urls) {
+                Image image = new Image(ImageDataFactory.create(url));
+                document.add(image);
+            }
+
             document.close();
         } catch (IOException e) {
             e.printStackTrace();

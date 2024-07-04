@@ -38,10 +38,10 @@ public class TaskGetImage {
 
     private void process() {
         System.out.println("基于接口定时任务");
-        ArrayList<BufferedImage> start = spider.start();
-
-
-        //TODO 下载
+//        ArrayList<BufferedImage> start = spider.start();
+        ArrayList<String> imagesUrl = spider.start();
+        PdfUtil.imageToPDF(imagesUrl, savePath + i + ".pdf");
+        i++;
 
     }
 }

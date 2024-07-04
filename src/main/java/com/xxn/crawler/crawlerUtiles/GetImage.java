@@ -92,9 +92,21 @@ public class GetImage implements PageProcessor {
     public ArrayList<String> start() {
         spider = Spider.create(this)
                 .addUrl(url)
-                .addPipeline(new FilePipeline(path))
                 .thread(5);
-        spider.start();
+
+        // 创建一个线程来运行spider
+        Thread spiderThread = new Thread(spider);
+
+        // 启动spider线程
+        spiderThread.start();
+
+        // 等待spider线程执行完毕
+        try {
+            spiderThread.join();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt(); // 重新设置中断状态
+            e.printStackTrace();
+        }
         return imagesUrl;
     }
 }

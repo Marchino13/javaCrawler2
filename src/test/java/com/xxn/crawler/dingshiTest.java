@@ -6,6 +6,8 @@ import com.xxn.crawler.crawlerUtiles.TaskGetNews;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Marchino
@@ -17,10 +19,11 @@ import org.springframework.stereotype.Component;
 public class dingshiTest {
 //    @Scheduled(cron = "0/3 * * * * ?")
     public static void main(String[] args) {
-        GetNews getNews = new GetNews("https://www.hhu.edu.cn/2024/0702/c166a285722/page.htm", null);
+        ArrayList<String> strings = new ArrayList<>();
+        strings.add("https://pic.ntimg.cn/BannerPic/20240701/original/20240701140621_1.jpg");
+        strings.add("https://pic.ntimg.cn/BannerPic/20240701/original/20240701140734_1.jpg");
 
-        new TaskGetNews(0, 3, "D:\\webmagic\\news", getNews).startTask();
-
+        PdfUtil.imageToPDF(strings,"D://test//webmagic//test.pdf");
 
     }
 }

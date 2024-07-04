@@ -202,7 +202,7 @@
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'images.zip';
+            // a.download = 'images.pdf';
             a.click();
         }).catch(error => {
             console.error('Error:', error);

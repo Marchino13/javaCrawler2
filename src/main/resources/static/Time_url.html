@@ -218,7 +218,7 @@
         var interval = (parseInt(minutes) * 60 + parseInt(seconds)) * 1000;
 
         // 这里应该发送请求到后端开始定时抓取
-        fetch("/crawler/startTimedCrawl", {
+        fetch("/crawler/startScheduledCrawler", {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({

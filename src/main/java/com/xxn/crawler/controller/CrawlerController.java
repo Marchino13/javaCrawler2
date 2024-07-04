@@ -53,10 +53,21 @@ public class CrawlerController {
 
     // 输入抓取图片url
     @PostMapping("/getImage")
-    public String getImage(HttpSession session, @RequestBody String url){
-        GetImage getImages = new GetImage("https://www.nipic.com/", "D:\\test\\pic");
+    public String getImage(HttpSession session, @RequestBody String url) {
+        GetImage getImages = new GetImage(url, null);
         ArrayList<String> images = getImages.start();
-        session.setAttribute("images", images);
+        session.setAttribute("imagesUrl",images);
+        return "Success";
+    }
+
+    @PostMapping("/downloadImages")
+    public String downloadImage(@RequestBody String path,HttpSession session, HttpServletResponse httpServletResponse) {
+        Object attribute = session.getAttribute("imagesUrl");
+
+        ArrayList<String> images = (ArrayList<String>) attribute;
+//        PdfUtil.downloadsImages(images, httpServletResponse);
+        PdfUtil.imageToPDF(images, path);
+        System.out.println("下载成功");
         return "Success";
     }
 
@@ -71,15 +82,16 @@ public class CrawlerController {
      * @author Marchino
      * @date 11:52 2024/7/4
      */
-    @GetMapping("/startScheduledCrawler")
-    public void ScheduledCrawler(int interval, String url, String path, boolean flag) {
-        if (flag){//定时抓取文章
+    @PostMapping("/startScheduledCrawler")
+    public void ScheduledCrawler(@RequestBody int interval, @RequestBody String url, @RequestBody String path, @RequestBody boolean flag) {
+        if (flag) {//定时抓取文章
             GetNews news = new GetNews(url, null);
             new TaskGetNews(0, interval, path, news).startTask();
-        }else {//定时抓取图片
+        } else {//定时抓取图片
             GetImage image = new GetImage(url, null);
             new TaskGetImage(0, interval, path, image).startTask();
         }
+        System.out.println(interval + url + path + flag);
 
     }
 
