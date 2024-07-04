@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>爬虫网页</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        .container {
+            max-width: 600px;
+            margin: 100px auto;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .input-group {
+            margin: 10px 0;
+            text-align: center;
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: 70%;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1 style="margin-bottom: 20px;">抓取成功</h1>
+    <p>页面将在十分钟后自动跳转，或者您可以点击下面的按钮立即返回：</p>
+    <div class="input-group">
+        <button onclick="returnNow()">返回</button>
+        <button onclick="previewData()">预览</button>
+        <button onclick="downloadData()">下载</button>
+    </div>
+
+</div>
+
+<script>
+    // 定义立即返回的函数
+    function returnNow() {
+        window.location.href = 'url.html';
+    }
+
+    // 定义预览数据的函数
+    function previewData() {
+        window.location.href = 'showInfo.html';
+    }
+
+    // 定义下载数据的函数
+    function downloadData() {
+        // 在这里实现下载数据的逻辑
+        fetch("/crawler/download", {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json'
+        },
+            body:""
+    })
+        alert('数据下载中');
+    }
+
+    // 定义定时器，在十分钟后自动跳转
+    setTimeout(function() {
+        window.location.href = 'url.html';
+    }, 10 * 60 * 1000); // 十分钟 = 10 * 60 * 1000 毫秒
+</script>
+
+</body>
+</html>

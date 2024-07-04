@@ -28,11 +28,20 @@ public class CrawlerController {
      * @author Marchino
      * @date 21:56 2024/7/3
      */
+
+//    private String taskStatus = "Pending"; // 任务状态：Pending, Success, Failed
     @PostMapping("/getAllByUrl")
     public String getByUrl(@RequestBody String url) {
-        spider = new GetAllByUrl(url, "D:\\test");
+//        taskStatus = "Pending"; // 重置任务状态
 
+        spider = new GetAllByUrl(url, "D:\\test");
         String stringJson = spider.start();
+        try {
+            Thread.sleep(2000); // 暂停当前线程1秒钟
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+//        taskStatus = "Success";
 
         System.out.println(url);
         return "Success";
