@@ -95,8 +95,9 @@ public class GetAllByUrl implements PageProcessor {
      * @param: 
      * @return void
      * @author Marchino
-     * @date 9:10 2024/7/4
+     * @date 9:13 2024/7/4
      */
+
     public void stop() {
         spider.stop();
         

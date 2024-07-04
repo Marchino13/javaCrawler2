@@ -1,6 +1,7 @@
 package com.xxn.crawler.controller;
 
 import com.xxn.crawler.crawlerUtiles.MyTask;
+import com.xxn.crawler.pojo.News;
 import com.xxn.crawler.result.Result;
 import com.xxn.crawler.crawlerUtiles.GetAllByUrl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +23,6 @@ public class CrawlerController {
     @Autowired
     private GetAllByUrl spider;
 
-    @Autowired
-    private HttpSession                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  session;
-
     /***
      * @description
      * @param: url 要爬取的网站url
@@ -34,31 +32,23 @@ public class CrawlerController {
      * @date 21:56 2024/7/3
      */
     @PostMapping("/getAllByUrl")
-    public String getByUrl(@RequestBody String url) {
-        spider = new GetAllByUrl(url, "D:\\test");
+    public String getByUrl(HttpSession session, @RequestBody String url) {
+//        spider = new GetAllByUrl(url, "D:\\test");
 
-        String stringJson = spider.start();
+//        News news = new News();
+//        String stringJson = spider.start();
 
-        System.out.println(url);
+//        session.setAttribute("news", news);
+        session.setAttribute("test", "test");
+                System.out.println(url);
         return "Success";
     }
 
-    /***
-     * @description 停止爬取
-     * @param:
-     * @return com.xxn.crawler.result.Result<java.lang.String>
-     * @author Marchino
-     * @date 22:00 2024/7/3
-     */
-    public Result<String> stop() {
-        spider.stop();
-        return Result.success("爬取结束");
-    }
 
     @GetMapping("/startScheduledCrawler")
-    public void ScheduledCrawler() {
-        spider = new GetAllByUrl("https://www.baidu.com/", "D:\\test");
-        MyTask myTask = new MyTask(0L, 5L, spider);
+    public void ScheduledCrawler(int initialDelay, int period, String url, String path) {
+        spider = new GetAllByUrl(url, path);
+        MyTask myTask = new MyTask(initialDelay, period, null, spider);
         myTask.startTask();
     }
 
