@@ -23,6 +23,7 @@ public class GetNews implements PageProcessor{
     private String url;
     private String path;
     private Spider spider;
+    private News news;
 
     public GetNews(String url, String path) {
         this.url = url;
@@ -37,23 +38,28 @@ public class GetNews implements PageProcessor{
         Html html = page.getHtml();
         //获取新闻页面的title；
         String title = html.css("#d-container > div > div.infobox > div > h1", "text").get();
-        title = title + "</br>";
+//        title = title + "</br>";
         page.putField("标题", title);
         String source = html.css("#d-container > div > div.infobox > div > p > span:nth-child(1)", "text").get();
-        source = source + "</br>";
+//        source = source + "</br>";
         page.putField("来源", source);
         String publishTime = html.css("#d-container > div > div.infobox > div > p > span:nth-child(2)", "text").get();
-        publishTime = publishTime + "</br>";
+//        publishTime = publishTime + "</br>";
         page.putField("发布时间", publishTime);
         List<String> text = html.xpath("//div[@class='wp_articlecontent']").all();
         page.putField("文章内容",text);
 
+        List<String> text1 = html.css("#d-container > div > div.infobox > div > div > div > div > p > span","text").all();
+        List<String> text2 = html.css("#d-container > div > div.infobox > div > div > div > div > p","text").all();
+        String articleText = text1.toString() + text2.toString();
 
-//        String textString = text.toString();
-//        News news = new News();
-//        news.setTitle(title);
-//        news.setContent(textString);
-//        news.setTime(publishTime);
+        // 创建一个新的 News 对象，并设置数据
+        news = new News();
+        news.setTitle(title);
+        news.setContent(articleText);
+        news.setTime(publishTime);
+
+
     }
 
     @Override
@@ -61,15 +67,28 @@ public class GetNews implements PageProcessor{
         return Site.me();
     }
 
-    public String start() {
-        spider = Spider.create(new GetNews())
+    public News start() {
+        spider = Spider.create(this)
                 //设置url
                 .addUrl(url)
                 //设置持久层
                 .addPipeline(new FilePipeline(path))
                 //设置布隆过滤器
-                .thread(5);
-        spider.start();
-        return null;
+                .thread(1);
+
+        // 创建一个线程来运行spider
+        Thread spiderThread = new Thread(spider);
+
+        // 启动spider线程
+        spiderThread.start();
+
+        // 等待spider线程执行完毕
+        try {
+            spiderThread.join();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt(); // 重新设置中断状态
+            e.printStackTrace();
+        }
+        return news;
     }
 }

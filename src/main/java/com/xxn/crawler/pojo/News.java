@@ -29,6 +29,15 @@ public class News implements Serializable {
         return title;
     }
 
+    public News(String title, String content, String time) {
+        this.title = title;
+        this.content = content;
+        this.time = time;
+    }
+
+    public News() {
+    }
+
     public void setTitle(String title) {
         this.title = title;
     }

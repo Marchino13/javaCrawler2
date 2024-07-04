@@ -1,5 +1,6 @@
 package com.xxn.crawler.controller;
 
+import com.xxn.crawler.crawlerUtiles.GetNews;
 import com.xxn.crawler.crawlerUtiles.MyTask;
 import com.xxn.crawler.pojo.News;
 import com.xxn.crawler.result.Result;
@@ -33,14 +34,11 @@ public class CrawlerController {
      */
     @PostMapping("/getAllByUrl")
     public String getByUrl(HttpSession session, @RequestBody String url) {
-//        spider = new GetAllByUrl(url, "D:\\test");
+        spider = new GetAllByUrl(url, "D:\\test");
+        GetNews getNews = new GetNews(url, "D:\\test");
+        News news = getNews.start();
 
-//        News news = new News();
-//        String stringJson = spider.start();
-
-//        session.setAttribute("news", news);
-        News news = new News("title", "content", "time");
-        session.setAttribute("test", news);
+        session.setAttribute("news", news);
         System.out.println(url);
         return "Success";
     }
