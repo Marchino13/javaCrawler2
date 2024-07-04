@@ -79,7 +79,7 @@ public class CrawlerController {
     @PostMapping("/getImage")
     public String getImage(@RequestBody String url, HttpSession session){
         GetImage getImages = new GetImage("https://www.nipic.com/", "D:\\test\\pic");
-        ArrayList<BufferedImage> images = getImages.start();
+        ArrayList<String> images = getImages.start();
         session.setAttribute("images", images);
         return "Success";
     }
@@ -106,7 +106,4 @@ public class CrawlerController {
         }
 
     }
-
-    @
-
 }
