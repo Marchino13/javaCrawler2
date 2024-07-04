@@ -6,6 +6,8 @@ import com.xxn.crawler.crawlerUtiles.GetAllByUrl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
+
 /**
  *
  * @author Marchino
@@ -19,6 +21,9 @@ public class CrawlerController {
 
     @Autowired
     private GetAllByUrl spider;
+
+    @Autowired
+    private HttpSession                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  session;
 
     /***
      * @description
@@ -55,6 +60,13 @@ public class CrawlerController {
         spider = new GetAllByUrl("https://www.baidu.com/", "D:\\test");
         MyTask myTask = new MyTask(0L, 5L, spider);
         myTask.startTask();
+    }
+
+    //TODO 下载
+    @PostMapping("/download")
+    public void download() {
+        spider = new GetAllByUrl("https://www.baidu.com/", "D:\\test");
+        spider.start();
     }
 
 }
