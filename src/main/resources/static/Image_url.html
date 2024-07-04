@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>王子请爪巴 - 图片抓取 🖼️</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+
+        .container {
+            background-color: #ffffff;
+            border-radius: 15px;
+            padding: 40px;
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            margin-top: 10vh;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 36px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-group {
+            margin: 20px 0;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #4CAF50;
+            border-radius: 50px;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        input[type="text"]:focus {
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.4);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border: none;
+            border-radius: 50px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+
+        .icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+            color: #4CAF50;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 80px; /* 增加按钮之间的间距 */
+            margin-top: 20px;
+        }
+
+        .loader {
+            display: none;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #4CAF50;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="icon">🖼️</div>
+    <h1>王子请爪巴 - 图片抓取</h1>
+    <div class="input-group">
+        <input type="text" id="url" placeholder="请输入图片URL或包含图片的网页URL">
+    </div>
+    <div class="loader" id="loader"></div>
+    <div class="btn-group">
+        <button class="btn" onclick="returnToIndex()">返回首页</button>
+        <button class="btn" onclick="getImages()">开始抓取</button>
+    </div>
+</div>
+<script>
+    function getImages() {
+        var url = document.getElementById("url").value.trim();
+        if (!url) {
+            alert("请输入URL");
+            return;
+        }
+
+        // 显示加载指示器
+        document.getElementById("loader").style.display = "block";
+
+        fetch("/crawler/getImagesByUrl", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'text/plain'
+            },
+            body: url
+        }).then(response => {
+            if (!response.ok) {
+                throw new Error('网络错误或服务器错误');
+            }
+            return response.text();
+        }).then(result => {
+            // 隐藏加载指示器
+            document.getElementById("loader").style.display = "none";
+
+            if (result === "Success") {
+                location.href = '/getImages.html'
+            } else {
+                alert("图片抓取失败，请检查URL或稍后再试")
+            }
+        }).catch(error => {
+            // 隐藏加载指示器
+            document.getElementById("loader").style.display = "none";
+
+            console.error('Error:', error);
+            alert("发生错误，请稍后再试");
+        });
+    }
+
+    function returnToIndex() {
+        window.location.href = 'index.html';
+    }
+</script>
+</body>
+</html>

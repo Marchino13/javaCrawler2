@@ -33,7 +33,6 @@ public class CrawlerController {
     @PostMapping("/getAllByUrl")
     public String getByUrl(HttpSession session, @RequestBody String url) {
 
-
         getNews = new GetNews(url, "D:\\test");
         News news = getNews.start();
 
