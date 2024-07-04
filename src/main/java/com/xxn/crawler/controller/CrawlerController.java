@@ -2,6 +2,7 @@ package com.xxn.crawler.controller;
 
 import com.xxn.crawler.crawlerUtiles.*;
 import com.xxn.crawler.pojo.News;
+import com.xxn.crawler.pojo.ScheduledCrawlerRequest;
 import com.xxn.crawler.result.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -83,15 +84,20 @@ public class CrawlerController {
      * @date 11:52 2024/7/4
      */
     @PostMapping("/startScheduledCrawler")
-    public void ScheduledCrawler(@RequestBody int interval, @RequestBody String url, @RequestBody String path, @RequestBody boolean flag) {
+    public void ScheduledCrawler(@RequestBody ScheduledCrawlerRequest reques) {
+        String interval = reques.getInterval() ;
+        int i = Integer.parseInt(interval);
+        String url = reques.getUrl();
+        String path = reques.getSavePath();
+        boolean flag = reques.isFlag();
         if (flag) {//定时抓取文章
             GetNews news = new GetNews(url, null);
-            new TaskGetNews(0, interval, path, news).startTask();
+            new TaskGetNews(0, i, path, news).startTask();
         } else {//定时抓取图片
             GetImage image = new GetImage(url, null);
-            new TaskGetImage(0, interval, path, image).startTask();
+            new TaskGetImage(0, i, path, image).startTask();
         }
-        System.out.println(interval + url + path + flag);
+
 
     }
 

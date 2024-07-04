@@ -41,6 +41,9 @@ public class TaskGetImage {
 //        ArrayList<BufferedImage> start = spider.start();
         ArrayList<String> imagesUrl = spider.start();
         PdfUtil.imageToPDF(imagesUrl, savePath + i + ".pdf");
+        for (String s : imagesUrl) {
+            System.out.println("调试 ==========================" + s);
+        }
         i++;
 
     }

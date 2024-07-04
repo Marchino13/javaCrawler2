@@ -38,10 +38,10 @@ public class TaskGetNews {
     }
 
     private void process() {
-        System.out.println("基于接口定时任务");
-        News news = spider.start();
 
+        News news = spider.start();
         PdfUtil.newsTopdf(news.getTitle(), news.getTime(), news.getContent(), savePath + i + ".pdf");
         i++;
+        System.out.println("定时任务执行完成");
     }
 }

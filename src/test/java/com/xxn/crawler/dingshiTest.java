@@ -17,13 +17,10 @@ import java.util.ArrayList;
 
 @Component
 public class dingshiTest {
-//    @Scheduled(cron = "0/3 * * * * ?")
+    //    @Scheduled(cron = "0/3 * * * * ?")
     public static void main(String[] args) {
-        ArrayList<String> strings = new ArrayList<>();
-        strings.add("https://pic.ntimg.cn/BannerPic/20240701/original/20240701140621_1.jpg");
-        strings.add("https://pic.ntimg.cn/BannerPic/20240701/original/20240701140734_1.jpg");
-
-        PdfUtil.imageToPDF(strings,"D://test//webmagic//test.pdf");
-
+        GetNews getNews = new GetNews("https://www.hhu.edu.cn/2024/0704/c166a285796/page.htm", null);
+        TaskGetNews taskGetNews = new TaskGetNews(0, 3, "D:\\webmagic\\testt", getNews);
+        taskGetNews.startTask();
     }
 }
