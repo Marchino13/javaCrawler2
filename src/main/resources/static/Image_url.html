@@ -105,7 +105,7 @@
 <body>
 <div class="container">
     <div class="icon">🖼️</div>
-    <h1>王子请爪巴 - 图片抓取</h1>
+    <h1>公主请爪巴</h1>
     <div class="input-group">
         <input type="text" id="url" placeholder="请输入图片URL或包含图片的网页URL">
     </div>
@@ -122,7 +122,6 @@
             alert("请输入URL");
             return;
         }
-
         // 显示加载指示器
         document.getElementById("loader").style.display = "block";
 
@@ -142,14 +141,13 @@
             document.getElementById("loader").style.display = "none";
 
             if (result === "Success") {
-                location.href = '/getImages.html'
+                location.href = '/Image_getInfo.html'
             } else {
                 alert("图片抓取失败，请检查URL或稍后再试")
             }
         }).catch(error => {
             // 隐藏加载指示器
             document.getElementById("loader").style.display = "none";
-
             console.error('Error:', error);
             alert("发生错误，请稍后再试");
         });

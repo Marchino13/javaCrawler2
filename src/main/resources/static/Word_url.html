@@ -118,7 +118,7 @@
 <script>
     function getUrl() {
         var url = document.getElementById("url").value.trim();
-        if (!word_url) {
+        if (!url) {
             alert("请输入URL");
             return;
         }
@@ -131,7 +131,7 @@
             headers: {
                 'Content-Type': 'text/plain' // 指定发送的数据类型为纯文本
             },
-            body: word_url  // 字符串
+            body: url  // 字符串
         }).then(response => {
             if (!response.ok) {
                 throw new Error('网络错误或服务器错误');
@@ -142,7 +142,7 @@
             document.getElementById("loader").style.display = "none";
 
             if (testData === "Success") {
-                location.href = '/getInfo.html'
+                location.href = '/Word_getInfo.html'
             } else {
                 alert("抓取失败 是什么原因呢~")
             }
