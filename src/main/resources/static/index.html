@@ -4,49 +4,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>欢迎来到爪巴 🐾</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
         /* 基本页面样式 */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
             display: flex;
             flex-direction: column;
-            justify-content: flex-start; /* 内容从顶部开始排列 */
+            justify-content: flex-start;
             align-items: center;
             min-height: 100vh;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); /* 渐变背景 */
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
         }
 
         /* 标题样式 */
         .title {
             font-size: 48px;
             color: #2c3e50;
-            margin-top: 10vh; /* 顶部留白 */
-            margin-bottom: 40px;
+            margin-top: 10vh; /* 增加顶部边距 */
+            margin-bottom: 60px; /* 增加底部边距 */
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-            animation: fadeIn 1s ease-out; /* 淡入动画 */
+            animation: fadeIn 1s ease-out;
         }
 
         /* 选项容器样式 */
         .container {
             display: flex;
-            justify-content: space-around;
+            justify-content: center; /* 居中对齐 */
             width: 90%;
-            max-width: 1000px;
-            margin-bottom: 5vh; /* 底部留白 */
+            max-width: 1200px;
+            margin: 0 auto;
+            margin-bottom: 5vh;
+            gap: 40px; /* 增加选项之间的间距 */
         }
 
         /* 单个选项卡样式 */
         .option {
             background-color: #ffffff;
             border-radius: 20px;
-            padding: 40px;
-            width: 40%;
+            padding: 30px;
+            width: calc(33% - 40px); /* 调整宽度以适应间距 */
             text-align: center;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
-            animation: slideUp 0.5s ease-out; /* 向上滑入动画 */
+            animation: slideUp 0.5s ease-out;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
         }
 
         /* 选项卡悬停效果 */
@@ -58,19 +65,19 @@
         /* 选项卡标题样式 */
         h2 {
             color: #34495e;
-            margin-bottom: 30px;
-            font-size: 28px;
+            margin: 20px 0;
+            font-size: 24px;
         }
 
         /* 按钮样式 */
         .btn {
             display: inline-block;
-            padding: 15px 40px;
+            padding: 12px 30px;
             background-color: #3498db;
             color: white;
             text-decoration: none;
             border-radius: 50px;
-            font-size: 18px;
+            font-size: 16px;
             transition: all 0.3s ease;
             box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
         }
@@ -83,10 +90,16 @@
 
         /* 图标样式 */
         .icon {
-            font-size: 70px;
+            font-size: 60px;
             margin-bottom: 20px;
-            color: #3498db;
             transition: all 0.3s ease;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            background-color: #ecf0f1;
         }
 
         /* 图标悬停效果 */
@@ -105,25 +118,41 @@
             from { transform: translateY(50px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
         }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                align-items: center;
+            }
+            .option {
+                width: 80%;
+                margin-bottom: 20px;
+            }
+        }
     </style>
 </head>
 <body>
-<!-- 页面标题 -->
 <h1 class="title">欢迎来到爪巴 🐾</h1>
 
-<!-- 选项容器 -->
 <div class="container">
     <!-- 定时抓取选项 -->
     <div class="option">
         <div class="icon">⏰</div>
         <h2>定时抓取</h2>
-        <a href="time_url.html" class="btn">进入</a>
+        <a href="Time_url.html" class="btn">进入</a>
     </div>
-    <!-- 立即抓取选项 -->
+    <!-- 抓取文章选项 -->
     <div class="option">
-        <div class="icon">🚀</div>
-        <h2>立即抓取</h2>
-        <a href="url.html" class="btn">进入</a>
+        <div class="icon">📄</div>
+        <h2>抓取文章</h2>
+        <a href="Word_url.html" class="btn">进入</a>
+    </div>
+    <!-- 抓取图片选项 -->
+    <div class="option">
+        <div class="icon">🖼️</div>
+        <h2>抓取图片</h2>
+        <a href="Image_url.html" class="btn">进入</a>
     </div>
 </div>
 </body>

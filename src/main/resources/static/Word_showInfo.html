@@ -184,12 +184,35 @@
     }
 
     function returnToUrl() {
-        window.location.href = 'url.html';
+        window.location.href = 'Word_url.html';
     }
 
     function downloadPDF() {
-        // 这里添加下载PDF的逻辑
-        alert('PDF下载功能正在开发中');
+        fetch("/crawler/download", {
+            method: 'Post',
+            headers: {'Content-Type': 'application/json'},
+            body: ""
+        }).then(response => {
+            if (response.ok) {
+                return response.blob();  // 将响应体转换为 Blob 对象
+            } else {
+                throw new Error('Download failed');
+            }
+        }).then(blob => {
+            // 创建一个新的 URL 对象
+            const url = window.URL.createObjectURL(blob);
+            // 创建一个新的 a 元素
+            const a = document.createElement('a');
+            // 设置 a 元素的 href 属性
+            a.href = url;
+            // 设置 a 元素的 download 属性
+            a.download = 'news.pdf';
+            // 触发 a 元素的 click 事件
+            a.click();
+        }).catch(error => {
+            console.error('Error:', error);
+            alert('下载出错，请稍后再试');
+        });
     }
 
     // 初始调用

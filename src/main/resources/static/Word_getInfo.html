@@ -86,11 +86,11 @@
 </div>
 <script>
     function returnNow() {
-        window.location.href = 'url.html';
+        window.location.href = 'Word_url.html';
     }
 
     function previewData() {
-        window.location.href = 'showInfo.html';
+        window.location.href = 'Word_showInfo.html';
     }
 
     function downloadData() {
@@ -107,16 +107,12 @@
         }).then(blob => {
             // 创建一个新的 URL 对象
             const url = window.URL.createObjectURL(blob);
-
             // 创建一个新的 a 元素
             const a = document.createElement('a');
-
             // 设置 a 元素的 href 属性
             a.href = url;
-
             // 设置 a 元素的 download 属性
             a.download = 'news.pdf';
-
             // 触发 a 元素的 click 事件
             a.click();
         }).catch(error => {
@@ -126,7 +122,7 @@
     }
 
     setTimeout(function () {
-        window.location.href = 'url.html';
+        window.location.href = 'Word_url.html';
     }, 10 * 60 * 1000);
 </script>
 </body>
