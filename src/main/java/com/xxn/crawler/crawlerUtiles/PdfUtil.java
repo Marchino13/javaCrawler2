@@ -15,15 +15,17 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 
 public class PdfUtil {
     public static void newsTopdf(String title,String time,String content,String path){
         PdfWriter writer;
+        System.out.println(title+time+content);
 
         try{
-            writer = new PdfWriter(new FileOutputStream(path));
+            writer = new PdfWriter(Files.newOutputStream(Paths.get(path)));
             PdfFont font = PdfFontFactory.createFont("C:\\Windows\\Fonts\\simhei.ttf", PdfEncodings.IDENTITY_H,false);
             //方法中设置中文字体
             PdfDocument pdf = new PdfDocument(writer);

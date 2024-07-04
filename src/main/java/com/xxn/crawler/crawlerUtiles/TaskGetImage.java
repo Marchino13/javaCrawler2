@@ -2,7 +2,6 @@ package com.xxn.crawler.crawlerUtiles;
 
 import com.xxn.crawler.pojo.News;
 
-import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -36,7 +35,7 @@ public class TaskGetImage {
 
     private void process() {
         System.out.println("基于接口定时任务");
-        ArrayList<String> start = spider.start();
+//        String start = spider.start();
 
         //TODO 下载
 
