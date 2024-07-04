@@ -35,7 +35,6 @@ public class News implements Serializable {
         return title;
     }
 
-
     public News() {
     }
 

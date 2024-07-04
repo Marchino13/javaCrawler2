@@ -84,6 +84,22 @@
             gap: 80px; /* 增加按钮之间的间距 */
             margin-top: 20px;
         }
+
+        .loader {
+            display: none;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #4CAF50;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -93,6 +109,7 @@
     <div class="input-group">
         <input type="text" id="url" placeholder="请输入URL">
     </div>
+    <div class="loader" id="loader"></div>
     <div class="btn-group">
         <button class="btn" onclick="returnToIndex()">返回首页</button>
         <button class="btn" onclick="getUrl()">开始抓取</button>
@@ -105,6 +122,10 @@
             alert("请输入URL");
             return;
         }
+
+        // 显示加载指示器
+        document.getElementById("loader").style.display = "block";
+
         fetch("/crawler/getAllByUrl", {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
@@ -115,12 +136,18 @@
             }
             return response.text();
         }).then(testData => {
+            // 隐藏加载指示器
+            document.getElementById("loader").style.display = "none";
+
             if (testData === "Success") {
                 location.href = '/getInfo.html'
             } else {
                 alert("抓取失败 是什么原因呢~")
             }
         }).catch(error => {
+            // 隐藏加载指示器
+            document.getElementById("loader").style.display = "none";
+
             console.error('Error:', error);
             alert("发生错误，请稍后再试");
         });
