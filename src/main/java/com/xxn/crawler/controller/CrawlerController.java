@@ -6,6 +6,7 @@ import com.xxn.crawler.result.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -33,7 +34,8 @@ public class CrawlerController {
     @PostMapping("/getAllByUrl")
     public String getByUrl(HttpSession session, @RequestBody String url) {
 
-        getNews = new GetNews(url, "D:\\test");
+
+        getNews = new GetNews(url, null);
         News news = getNews.start();
 
         session.setAttribute("news", news);
@@ -53,14 +55,14 @@ public class CrawlerController {
      * @date 11:52 2024/7/4
      */
     @GetMapping("/startScheduledCrawler")
-    public void ScheduledCrawler(int initialDelay, int period, String url, String path, boolean flag) {
+    public void ScheduledCrawler(int interval, String url, String path, boolean flag) {
         if (flag){//定时抓取文章
-            GetNews news = new GetNews();
-            MyTask myTask = new MyTask(initialDelay, period, path, news);
+            GetNews news = new GetNews(url, null);
+            MyTask myTask = new MyTask(0, interval, path, news);
             myTask.startTask();
         }else {//定时抓取图片
-            GetImage image = new GetImage();
-            TaskGetImage taskGetImage = new TaskGetImage(initialDelay, period, path, image);
+            GetImage image = new GetImage(url, null);
+            TaskGetImage taskGetImage = new TaskGetImage(0, interval, path, image);
             taskGetImage.startTask();
         }
         
@@ -68,8 +70,12 @@ public class CrawlerController {
 
     //TODO 下载
     @PostMapping("/download")
-    public void download(HttpSession session) {
+    public void download(HttpSession session, HttpServletResponse httpServletResponse) {
         News news = (News) session.getAttribute("news");
+
+        PdfUtil.downloadNews(news.getTitle(), news.getTime(), news.getContent(), httpServletResponse);
+
+
 
 
     }
